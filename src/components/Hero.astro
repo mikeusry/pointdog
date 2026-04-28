@@ -1,0 +1,96 @@
+---
+interface Props {
+  eyebrow?: string
+  title: string
+  subtitle?: string
+  ctaLabel?: string
+  ctaHref?: string
+  secondaryLabel?: string
+  secondaryHref?: string
+  tone?: 'surface' | 'primary' | 'white'
+  bgImage?: string
+}
+
+const {
+  eyebrow,
+  title,
+  subtitle,
+  ctaLabel,
+  ctaHref,
+  secondaryLabel,
+  secondaryHref,
+  tone = 'white',
+  bgImage,
+} = Astro.props
+
+const sectionBaseClass =
+  tone === 'primary'
+    ? 'bg-(--color-brand-primary) text-white'
+    : tone === 'surface'
+      ? 'bg-(--color-brand-surface) text-(--color-brand-ink)'
+      : 'bg-white text-(--color-brand-ink)'
+
+const heroStyle = bgImage
+  ? `background-image: linear-gradient(rgba(0,93,93,0.92), rgba(0,57,57,0.92)), url('${bgImage}'); background-position: center; background-size: cover; color: white;`
+  : undefined
+
+const eyebrowClass = bgImage || tone === 'primary'
+  ? 'text-(--color-brand-accent)'
+  : 'text-(--color-brand-primary)'
+
+const ctaClass = bgImage || tone === 'primary'
+  ? 'bg-white text-(--color-brand-primary) hover:bg-(--color-brand-surface)'
+  : 'bg-(--color-brand-primary) text-white hover:bg-(--color-brand-primary-dark)'
+
+const secondaryCtaClass = bgImage || tone === 'primary'
+  ? 'border border-white/30 text-white hover:bg-white/10'
+  : 'border border-(--color-brand-border) text-(--color-brand-ink) hover:bg-(--color-brand-surface)'
+---
+
+<section
+  class={`px-6 py-20 md:py-28 ${bgImage ? '' : sectionBaseClass}`}
+  style={heroStyle}
+>
+  <div class="mx-auto max-w-4xl text-center">
+    {
+      eyebrow && (
+        <p class={`text-sm font-semibold tracking-wider uppercase ${eyebrowClass}`}>
+          {eyebrow}
+        </p>
+      )
+    }
+    <h1 class="font-display mt-4 text-4xl font-bold leading-tight md:text-6xl">
+      <Fragment set:html={title} />
+    </h1>
+    {
+      subtitle && (
+        <p
+          class={`mx-auto mt-6 max-w-2xl text-lg ${bgImage || tone === 'primary' ? 'text-white/90' : 'text-gray-700'}`}
+          set:html={subtitle}
+        />
+      )
+    }
+    {
+      (ctaLabel || secondaryLabel) && (
+        <div class="mt-10 flex flex-wrap items-center justify-center gap-3">
+          {ctaLabel && ctaHref && (
+            <a
+              href={ctaHref}
+              class={`inline-block rounded-md px-8 py-3 font-semibold transition-colors ${ctaClass}`}
+            >
+              {ctaLabel}
+            </a>
+          )}
+          {secondaryLabel && secondaryHref && (
+            <a
+              href={secondaryHref}
+              class={`inline-block rounded-md px-8 py-3 font-semibold transition-colors ${secondaryCtaClass}`}
+            >
+              {secondaryLabel}
+            </a>
+          )}
+        </div>
+      )
+    }
+  </div>
+</section>

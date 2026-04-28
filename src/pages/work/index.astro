@@ -1,0 +1,45 @@
+---
+import { getCollection } from 'astro:content'
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+import CaseStudyCard from '../../components/CaseStudyCard.astro'
+import CTASection from '../../components/CTASection.astro'
+import BreadcrumbSchema from '../../components/schema/BreadcrumbSchema.astro'
+
+const cases = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order)
+---
+
+<Layout
+  title="Our Work | point.dog Digital"
+  description="Real estate MLS APIs. AI intake chatbots. Donor-attribution pipelines. Programmatic SEO. The technical work that makes our clients' marketing actually convert."
+>
+  <BreadcrumbSchema items={[{ name: 'Home', url: '/' }, { name: 'Work', url: '/work' }]} />
+
+  <Hero
+    eyebrow="Our Work"
+    title="Marketing that needs the backend to work."
+    subtitle="A digital marketing agency's case studies usually look like screenshots and ROAS chart claims. Ours look like backend architecture."
+    tone="primary"
+  />
+
+  <section class="px-6 py-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="grid gap-6 md:grid-cols-2">
+        {
+          cases.map((c) => (
+            <CaseStudyCard
+              client={c.data.client}
+              headline={c.data.headline}
+              marketingPayoff={c.data.marketingPayoff}
+              stack={c.data.stack}
+              industry={c.data.industry}
+              href={`/work/${c.id}`}
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <CTASection />
+</Layout>

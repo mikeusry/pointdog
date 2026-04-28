@@ -1,0 +1,93 @@
+---
+import { siteConfig } from '../data/siteConfig'
+const nav = siteConfig.primaryNav
+---
+
+<header class="sticky top-0 z-40 border-b border-(--color-brand-border) bg-white/95 backdrop-blur">
+  <div class="mx-auto flex max-w-6xl items-center justify-between gap-6 px-6 py-4">
+    <a href="/" aria-label="point.dog home" class="flex shrink-0 items-center gap-3">
+      <img src="/logo-mark.png" alt="" width="40" height="40" class="h-9 w-auto" />
+      <span class="font-display text-xl font-bold text-(--color-brand-primary)">point.dog</span>
+    </a>
+
+    <nav class="hidden items-center gap-1 md:flex" aria-label="Primary">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class="rounded-md px-3 py-2 text-sm font-medium text-(--color-brand-ink) transition-colors hover:bg-(--color-brand-surface) hover:text-(--color-brand-primary)"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-3">
+      <a
+        href="/contact"
+        class="rounded-md bg-(--color-brand-primary) px-4 py-2 text-sm font-semibold text-white shadow-sm transition-colors hover:bg-(--color-brand-primary-dark)"
+      >
+        Talk to us
+      </a>
+      <button
+        type="button"
+        aria-label="Open menu"
+        aria-controls="mobile-menu"
+        aria-expanded="false"
+        class="md:hidden"
+        id="mobile-menu-toggle"
+      >
+        <svg
+          class="h-6 w-6 text-(--color-brand-ink)"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          stroke-linecap="round"
+        >
+          <line x1="3" y1="6" x2="21" y2="6" />
+          <line x1="3" y1="12" x2="21" y2="12" />
+          <line x1="3" y1="18" x2="21" y2="18" />
+        </svg>
+      </button>
+    </div>
+  </div>
+
+  <div id="mobile-menu" hidden class="border-t border-(--color-brand-border) md:hidden">
+    <nav class="space-y-1 px-4 py-3" aria-label="Mobile">
+      {
+        nav.map((item) => (
+          <a
+            href={item.href}
+            class="block rounded-md px-3 py-2 text-base font-medium text-(--color-brand-ink) hover:bg-(--color-brand-surface)"
+          >
+            {item.label}
+          </a>
+        ))
+      }
+      <a
+        href="/contact"
+        class="mt-2 block rounded-md bg-(--color-brand-primary) px-3 py-2 text-center text-sm font-semibold text-white"
+      >
+        Talk to us
+      </a>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const toggle = document.getElementById('mobile-menu-toggle')
+  const menu = document.getElementById('mobile-menu')
+  toggle?.addEventListener('click', () => {
+    if (!menu) return
+    const open = !menu.hasAttribute('hidden')
+    if (open) {
+      menu.setAttribute('hidden', '')
+      toggle.setAttribute('aria-expanded', 'false')
+    } else {
+      menu.removeAttribute('hidden')
+      toggle.setAttribute('aria-expanded', 'true')
+    }
+  })
+</script>

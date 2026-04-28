@@ -1,0 +1,61 @@
+---
+client: CPRC ENOUGH! Campaign
+headline: 'Influencer-attributed donor pipeline for a national nonprofit.'
+summary: 'Shopify → NeonCRM with influencer attribution. Cloudflare Workers + Supabase.'
+marketingPayoff: 'CPRC pays creators on real ROI, not vanity clicks. Every donor traces back to the social post that drove them — so influencer spend optimizes itself.'
+stack:
+  - Astro
+  - Cloudflare Workers
+  - Shopify
+  - NeonCRM
+  - Supabase
+industry: Nonprofit
+order: 3
+---
+
+## The problem
+
+CPRC (Child & Parental Rights Campaign) runs the **ENOUGH! campaign** — selling decals via
+Shopify with proceeds going to the nonprofit's mission. Influencers and ambassadors drive
+sales through social media, and CPRC pays them based on attribution.
+
+The original setup:
+
+- Shopify handled e-commerce
+- **NeonCRM** held the donor database (a CRM purpose-built for nonprofits)
+- The two systems didn't talk
+- Influencer attribution was a quarterly manual reconciliation in spreadsheets
+
+That meant CPRC was **paying influencers without confirmed attribution**, and donors who
+came in through Shopify never appeared as proper records in NeonCRM — so they couldn't be
+included in donor stewardship campaigns.
+
+## What we built
+
+A **Cloudflare Worker pipeline** that fires on every Shopify order webhook:
+
+- **HMAC signature verification** — only legitimate Shopify webhooks accepted
+- **Order transformation** — convert Shopify order schema into NeonCRM donor schema
+- **Influencer code resolution** — discount code on order → Supabase lookup → influencer
+  attribution → write to NeonCRM custom field
+- **Donor account creation** in NeonCRM — every order becomes a donor record with full
+  contact details, donation amount, and influencer credit
+- **Google Sheets backup** — every order also written to a sheet so nothing is ever lost,
+  even if NeonCRM is down
+
+## Why this is a marketing win
+
+CPRC went from quarterly manual reconciliation to **real-time, source-of-truth attribution**.
+Influencer payouts are now data-driven. Donor stewardship campaigns reach 100% of donors
+because every Shopify customer is a NeonCRM contact within seconds.
+
+Most importantly: CPRC's marketing budget allocation between influencers, paid social, and
+direct response is now decided on real numbers — not guesses.
+
+## Tech stack notes
+
+- Webhooks are idempotent — duplicate Shopify webhook deliveries don't double-count donors
+- NeonCRM's API is older than most modern CRMs; we wrote a defensive client with retry +
+  field-format normalization
+- Cloudflare Workers are the right call for nonprofit budgets: $0 at low volume, no DevOps
+- Astro site for the campaign hub doubles as the influencer signup + dashboard

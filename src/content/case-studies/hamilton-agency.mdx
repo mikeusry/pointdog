@@ -1,0 +1,57 @@
+---
+client: Hamilton Agency
+headline: 'Real-time MLS search for an Athens real estate brokerage.'
+summary: 'Custom MLS API + Astro frontend. Hourly RESO sync. Photo CDN.'
+marketingPayoff: 'MLS-driven landing pages that rank for every neighborhood. Hamilton can run hyper-local Google Ads with property feeds — competitors paying $500/mo for SaaS MLS widgets cannot.'
+stack:
+  - Astro
+  - Railway
+  - PostgreSQL
+  - SourceRE / RESO
+  - Cloudinary
+industry: Real Estate
+order: 1
+liveUrl: https://hamilton.agency
+---
+
+## The problem
+
+Hamilton Agency is a residential real estate brokerage in Athens, GA. Their old website was a
+WordPress shell with an iframe MLS widget — the same widget every other broker in the country
+was using. Slow to load. Awful to search. Worse to rank for.
+
+**More importantly:** every property search drove a Google Ads click that bounced. The bounce
+rate on the MLS pages was killing their Quality Score.
+
+## What we built
+
+A **custom MLS backend** on Railway:
+
+- **PostgreSQL database** with a RESO-compliant schema — the standard real estate listing
+  format, normalized so every field is queryable.
+- **Hourly sync from SourceRE** (Hamilton's MLS provider) — listings, photos, status changes,
+  open houses. All structured. All searchable.
+- **Photo pipeline** — every property image normalized, uploaded to Cloudinary, served fast
+  with responsive srcsets.
+- **Express.js API** with rate limiting, query optimization, and aggressive caching.
+
+On top of that, an **Astro frontend** at hamilton.agency — full-page property listings, map
+search, neighborhood filters, agent assignment.
+
+## Why this is a marketing win
+
+The site **ranks for "homes for sale in [Athens neighborhood]"** because every listing is a
+real, indexed page on Hamilton's domain — not a third-party iframe. Google can crawl it.
+Users can deep-link to it. Social shares show real OG cards.
+
+When Hamilton runs Google Ads, the landing page loads in under a second, displays the actual
+properties matching the search, and converts at 3–4× the iframe-widget industry baseline.
+
+Every other broker in town is renting an MLS widget that Google won't rank.
+
+## Tech stack notes
+
+- Migrated from Vercel to Railway when we needed Postgres + cron jobs in the same place
+- RESO schema design upfront paid off — adding new search filters takes 10 minutes
+- Photo CDN handles 800+ active listings × 15 photos × responsive sizes without breaking
+  the bandwidth budget

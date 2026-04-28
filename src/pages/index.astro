@@ -1,0 +1,227 @@
+---
+import { getCollection } from 'astro:content'
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import CaseStudyCard from '../components/CaseStudyCard.astro'
+import LocalBusinessSchema from '../components/schema/LocalBusinessSchema.astro'
+import OrganizationSchema from '../components/schema/OrganizationSchema.astro'
+import WebSiteSchema from '../components/schema/WebSiteSchema.astro'
+import { siteConfig } from '../data/siteConfig'
+
+const cases = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order)
+---
+
+<Layout
+  title="point.dog — the agency that actually builds the backend"
+  description="Athens-based digital marketing agency. We build the websites, integrations, and tracking infrastructure that make modern advertising actually generate leads."
+>
+  <LocalBusinessSchema />
+  <OrganizationSchema />
+  <WebSiteSchema />
+
+  <Hero
+    title={`The agency that actually <span style="color: var(--color-brand-accent)">builds the backend.</span>`}
+    subtitle="Marketing only works as well as the data behind it. We build the integrations, pixels, and CDPs that make modern advertising actually generate leads."
+    ctaLabel="See our work"
+    ctaHref="/work"
+    secondaryLabel="Talk to us"
+    secondaryHref="/contact"
+    tone="primary"
+  />
+
+  <!-- Recent Work -->
+  <section class="px-6 py-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="text-center">
+        <p class="text-sm font-semibold tracking-wider text-(--color-brand-primary) uppercase">
+          Recent Work
+        </p>
+        <h2 class="font-display mt-3 text-3xl font-bold md:text-4xl">
+          Real engineering for real businesses.
+        </h2>
+        <p class="mx-auto mt-4 max-w-2xl text-(--color-brand-ink-muted)">
+          Most agencies hand off the technical work to "their developer." We don't. Here's what
+          that actually looks like.
+        </p>
+      </div>
+      <div class="mt-12 grid gap-6 md:grid-cols-2">
+        {
+          cases.map((c) => (
+            <CaseStudyCard
+              client={c.data.client}
+              headline={c.data.headline}
+              marketingPayoff={c.data.marketingPayoff}
+              stack={c.data.stack}
+              industry={c.data.industry}
+              href={`/work/${c.id}`}
+            />
+          ))
+        }
+      </div>
+      <div class="mt-10 text-center">
+        <a
+          href="/work"
+          class="inline-block text-sm font-semibold text-(--color-brand-primary) hover:underline"
+        >
+          See all of our work →
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY WE BUILD THE BACKEND — the diatribe, structured -->
+  <section
+    id="why-we-build"
+    class="border-y border-(--color-brand-border) bg-(--color-brand-surface) px-6 py-20"
+  >
+    <div class="mx-auto max-w-3xl">
+      <p class="text-sm font-semibold tracking-wider text-(--color-brand-primary) uppercase">
+        How we work
+      </p>
+      <h2 class="font-display mt-3 text-3xl font-bold md:text-4xl">
+        Why we build the backend.
+      </h2>
+
+      <div class="mt-8 space-y-6 text-lg leading-relaxed text-(--color-brand-ink)">
+        <p>
+          We're a marketing agency. Not a software shop. We didn't set out to build custom
+          software — but modern advertising forced our hand.
+        </p>
+        <p>
+          Google PMax, Meta, the AI-driven campaigns coming next — they all run on
+          <strong>data</strong>. The algorithm only performs as well as the signal you feed it.
+          Out-of-the-box pixels and SaaS tools give you lossy, generic signal. Bad data in →
+          wasted ad spend out.
+        </p>
+        <p>
+          So when your point-of-sale doesn't talk to your CRM — or your website can't fire the
+          conversion event your pixel needs — that's not a "nice-to-have IT problem." That's the
+          reason your ads aren't working.
+        </p>
+        <p class="font-semibold text-(--color-brand-primary)">We fix it.</p>
+        <p>
+          Custom integrations, first-party tracking pixels, CDP infrastructure, BigQuery
+          pipelines — whatever it takes to feed the algorithm the data your competitors can't.
+          So your ads convert. So your CAC drops. So you stop renting tools that don't fit.
+        </p>
+        <p>
+          The line between "marketing agency" and "digital consultancy" got blurry years ago.
+          We don't pretend to be your ad-spend manager. We're the team that makes sure the data
+          flowing back into your campaigns is actually good enough for the algorithm to learn
+          from.
+        </p>
+        <p class="border-l-4 border-(--color-brand-accent) bg-white py-3 pl-4 italic">
+          The end goal is always the same: more leads. The path there sometimes runs through
+          code.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHAT THIS LOOKS LIKE FOR YOU -->
+  <section class="px-6 py-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="text-center">
+        <p class="text-sm font-semibold tracking-wider text-(--color-brand-primary) uppercase">
+          What you get
+        </p>
+        <h2 class="font-display mt-3 text-3xl font-bold md:text-4xl">
+          Marketing that actually compounds.
+        </h2>
+      </div>
+      <div class="mt-14 grid gap-8 md:grid-cols-3">
+        <div class="rounded-lg border border-(--color-brand-border) bg-white p-6">
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-lg bg-(--color-brand-primary)/10 text-2xl"
+          >
+            📈
+          </div>
+          <h3 class="font-display mt-4 text-xl font-bold">More leads</h3>
+          <p class="mt-2 text-sm text-(--color-brand-ink-muted)">
+            SEO that ranks for searches that buy. Ads that don't waste budget. First-party data
+            that makes the algorithm work harder for you.
+          </p>
+        </div>
+        <div class="rounded-lg border border-(--color-brand-border) bg-white p-6">
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-lg bg-(--color-brand-primary)/10 text-2xl"
+          >
+            ⚙️
+          </div>
+          <h3 class="font-display mt-4 text-xl font-bold">Less busy work</h3>
+          <p class="mt-2 text-sm text-(--color-brand-ink-muted)">
+            Integrations that wire your tools together — instead of another SaaS subscription
+            and another spreadsheet to maintain by hand.
+          </p>
+        </div>
+        <div class="rounded-lg border border-(--color-brand-border) bg-white p-6">
+          <div
+            class="flex h-12 w-12 items-center justify-center rounded-lg bg-(--color-brand-primary)/10 text-2xl"
+          >
+            🗄️
+          </div>
+          <h3 class="font-display mt-4 text-xl font-bold">Owned data</h3>
+          <p class="mt-2 text-sm text-(--color-brand-ink-muted)">
+            Your site, your CRM, your customer data — not rented from a SaaS vendor that can
+            change pricing or get acquired and break your stack tomorrow.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPERATING ENTITIES — trust signal -->
+  <section class="border-t border-(--color-brand-border) bg-(--color-brand-primary) px-6 py-20 text-white">
+    <div class="mx-auto max-w-6xl">
+      <div class="text-center">
+        <p class="text-sm font-semibold tracking-wider text-(--color-brand-accent) uppercase">
+          We run our own companies, too
+        </p>
+        <h2 class="font-display mt-3 text-3xl font-bold md:text-4xl">
+          Five operating brands. Same stack we'd build for you.
+        </h2>
+        <p class="mx-auto mt-4 max-w-2xl text-white/80">
+          Before we shipped this for clients, we built it for ourselves. The same playbook —
+          custom websites, first-party tracking, CRM integrations, ad infrastructure — runs
+          across all of these.
+        </p>
+      </div>
+      <ul class="mt-12 grid gap-4 md:grid-cols-3 lg:grid-cols-5">
+        {
+          siteConfig.operatingEntities.map((e) => (
+            <li>
+              <a
+                href={e.url}
+                target="_blank"
+                rel="noopener"
+                class="block h-full rounded-lg border border-white/15 bg-white/5 p-4 transition hover:border-white/40 hover:bg-white/10"
+              >
+                <div class="font-display text-base font-bold text-white">{e.name}</div>
+                <p class="mt-1 text-xs text-white/70">{e.blurb}</p>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <section class="border-t border-(--color-brand-border) bg-(--color-brand-surface) px-6 py-14">
+    <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 md:flex-row">
+      <div>
+        <h3 class="font-display text-2xl font-bold">
+          Got a backend that's holding back your marketing?
+        </h3>
+        <p class="mt-1 text-sm text-(--color-brand-ink-muted)">
+          We don't take every project — but if it's a fit, we'll tell you straight.
+        </p>
+      </div>
+      <a
+        href="/contact"
+        class="rounded-md bg-(--color-brand-primary) px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-(--color-brand-primary-dark)"
+      >
+        Talk to us
+      </a>
+    </div>
+  </section>
+</Layout>

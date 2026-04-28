@@ -1,0 +1,40 @@
+---
+import { siteConfig } from '../../data/siteConfig'
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'ProfessionalService',
+  '@id': 'https://www.point.dog/#organization',
+  name: siteConfig.company.longName,
+  description:
+    'Athens-based digital marketing agency. We build the websites, integrations, and tracking infrastructure that make modern advertising work.',
+  url: 'https://www.point.dog',
+  image: 'https://www.point.dog/og-default.png',
+  logo: 'https://www.point.dog/logo-mark.png',
+  email: siteConfig.company.email,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: siteConfig.company.address.city,
+    addressRegion: siteConfig.company.address.state,
+    addressCountry: 'US',
+  },
+  geo: {
+    '@type': 'GeoCoordinates',
+    latitude: siteConfig.geo.latitude,
+    longitude: siteConfig.geo.longitude,
+  },
+  areaServed: 'United States',
+  knowsAbout: [
+    'Digital Marketing',
+    'Web Development',
+    'Search Engine Optimization',
+    'Custom Software Integration',
+    'Customer Data Platforms',
+    'Google Ads',
+    'Meta Ads',
+  ],
+  sameAs: [siteConfig.social.linkedin].filter(Boolean),
+}
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

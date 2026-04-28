@@ -1,0 +1,45 @@
+---
+/** Long-form content wrapper. */
+---
+
+<div
+  class="prose-style mx-auto max-w-3xl text-base leading-relaxed text-(--color-brand-ink)"
+>
+  <slot />
+</div>
+
+<style is:global>
+  .prose-style p { margin-block: 1em; }
+  .prose-style h2 {
+    margin-top: 2em;
+    margin-bottom: 0.5em;
+    font-family: var(--font-display);
+    font-size: 1.75rem;
+    font-weight: 700;
+  }
+  .prose-style h3 {
+    margin-top: 1.5em;
+    margin-bottom: 0.5em;
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .prose-style ul,
+  .prose-style ol {
+    margin-block: 1em;
+    padding-left: 1.5em;
+  }
+  .prose-style ul { list-style: disc; }
+  .prose-style ol { list-style: decimal; }
+  .prose-style li { margin-block: 0.25em; }
+  .prose-style a {
+    color: var(--color-brand-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+  .prose-style strong { font-weight: 700; }
+  .prose-style hr {
+    margin-block: 2em;
+    border-color: var(--color-brand-border);
+  }
+</style>

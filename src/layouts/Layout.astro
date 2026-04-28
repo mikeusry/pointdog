@@ -1,0 +1,132 @@
+---
+import '../styles/global.css'
+import Header from '../components/Header.astro'
+import Footer from '../components/Footer.astro'
+import { siteConfig } from '../data/siteConfig'
+
+export interface Props {
+  title?: string
+  description?: string
+  canonical?: string
+  noindex?: boolean
+  /** Open Graph image URL (1200x630). Defaults to brand OG image. */
+  image?: string
+  /** Page-level Schema.org JSON-LD blocks rendered in <head>. */
+  schema?: unknown[]
+}
+
+const {
+  title = `${siteConfig.company.longName} — ${siteConfig.company.tagline}`,
+  description = "We're a digital marketing agency that builds the backend modern advertising actually needs. Custom integrations, first-party tracking, CDPs — the technical work that makes your ads convert.",
+  canonical,
+  noindex = false,
+  image,
+  schema = [],
+} = Astro.props
+
+const defaultOgImage = 'https://www.point.dog/og-default.png'
+const ogImage = image || defaultOgImage
+
+const siteUrl = 'https://www.point.dog'
+const path = Astro.url.pathname
+const canonicalUrl = canonical || `${siteUrl}${path === '/' ? '' : path.replace(/\/$/, '')}`
+
+const isProd = import.meta.env.PROD
+---
+
+<!doctype html>
+<html lang="en" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:site_name" content={siteConfig.company.name} />
+    <meta property="og:locale" content="en_US" />
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Comfortaa:wght@400;500;600;700&family=Ubuntu:wght@400;500;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link rel="icon" type="image/png" href="/favicon.png" /><link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <meta name="theme-color" content="#005d5d" />
+
+    {
+      schema.map((blob: unknown) => (
+        <script is:inline type="application/ld+json" set:html={JSON.stringify(blob)} />
+      ))
+    }
+
+    {
+      isProd && (
+        <Fragment>
+          {/* Google Tag Manager — container GTM-PNT6BSJ (point.dog primary) */}
+          <script is:inline>
+            (function (w, d, s, l, i) {
+              w[l] = w[l] || []
+              w[l].push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' })
+              var f = d.getElementsByTagName(s)[0],
+                j = d.createElement(s),
+                dl = l != 'dataLayer' ? '&l=' + l : ''
+              j.async = true
+              j.src = 'https://www.googletagmanager.com/gtm.js?id=' + i + dl
+              f.parentNode.insertBefore(j, f)
+            })(window, document, 'script', 'dataLayer', 'GTM-PNT6BSJ')
+          </script>
+
+          {/* point.dog Lead-Gen Pixel — first-party tracking */}
+          <script is:inline>
+            window.pdPixelConfig = {
+              brandId: 'point-dog',
+              endpoint: 'https://pd-pixel-point-dog.point-dog-digital.workers.dev/collect',
+              debug: false,
+              formSelectors: '#contactForm',
+              defaultLeadValue: 500,
+            };
+          </script>
+          <script is:inline src="/pd-pixel.js" async></script>
+        </Fragment>
+      )
+    }
+  </head>
+  <body>
+    {
+      isProd && (
+        <noscript>
+          <iframe
+            src="https://www.googletagmanager.com/ns.html?id=GTM-PNT6BSJ"
+            height="0"
+            width="0"
+            style="display:none;visibility:hidden"
+            title="Google Tag Manager"
+          />
+        </noscript>
+      )
+    }
+    <Header />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

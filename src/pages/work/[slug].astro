@@ -1,0 +1,79 @@
+---
+import { getCollection, render } from 'astro:content'
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+import Prose from '../../components/Prose.astro'
+import CTASection from '../../components/CTASection.astro'
+import BreadcrumbSchema from '../../components/schema/BreadcrumbSchema.astro'
+
+export const prerender = true
+
+export async function getStaticPaths() {
+  const cases = await getCollection('caseStudies')
+  return cases.map((c) => ({ params: { slug: c.id }, props: { caseStudy: c } }))
+}
+
+const { caseStudy } = Astro.props
+const { Content } = await render(caseStudy)
+const d = caseStudy.data
+---
+
+<Layout
+  title={`${d.client} — point.dog case study`}
+  description={d.marketingPayoff}
+  image={d.coverImage}
+>
+  <BreadcrumbSchema
+    items={[
+      { name: 'Home', url: '/' },
+      { name: 'Work', url: '/work' },
+      { name: d.client, url: `/work/${caseStudy.id}` },
+    ]}
+  />
+
+  <Hero
+    eyebrow={d.client}
+    title={d.headline}
+    subtitle={d.marketingPayoff}
+    tone="primary"
+  />
+
+  <section class="border-b border-(--color-brand-border) bg-(--color-brand-surface) px-6 py-8">
+    <div class="mx-auto flex max-w-3xl flex-wrap items-center justify-between gap-4">
+      <div class="flex flex-wrap items-center gap-2">
+        <span
+          class="text-xs font-semibold tracking-wider text-(--color-brand-ink-muted) uppercase"
+        >
+          Stack
+        </span>
+        {
+          d.stack.map((tech: string) => (
+            <span class="inline-block rounded-full bg-white px-3 py-1 text-xs font-medium text-(--color-brand-ink-muted) ring-1 ring-(--color-brand-border)">
+              {tech}
+            </span>
+          ))
+        }
+      </div>
+      {
+        d.liveUrl && (
+          <a
+            href={d.liveUrl}
+            target="_blank"
+            rel="noopener"
+            class="text-sm font-semibold text-(--color-brand-primary) hover:underline"
+          >
+            Visit live site →
+          </a>
+        )
+      }
+    </div>
+  </section>
+
+  <section class="px-6 py-16">
+    <Prose>
+      <Content />
+    </Prose>
+  </section>
+
+  <CTASection />
+</Layout>

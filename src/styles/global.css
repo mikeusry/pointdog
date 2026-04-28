@@ -1,0 +1,47 @@
+@import 'tailwindcss';
+
+/**
+ * Brand tokens — extracted from Webflow pointdogs.webflow.css.
+ * Keep in sync with src/data/siteConfig.ts colors.
+ */
+@theme {
+  --color-brand-primary: #005d5d;
+  --color-brand-primary-dark: #003939;
+  --color-brand-secondary: #518c6a;
+  --color-brand-accent: #ffd800;
+  --color-brand-accent-warm: #ff9f1c;
+  --color-brand-surface: #f1f1f1;
+  --color-brand-surface-muted: #bfc1c2;
+  --color-brand-ink: #212121;
+  --color-brand-ink-muted: #333333;
+  --color-brand-border: #e5e5e5;
+
+  /* Display: Comfortaa (rounded, distinctive — Webflow original)
+     Body: Ubuntu (clean sans, modern) */
+  --font-display: 'Comfortaa', system-ui, sans-serif;
+  --font-sans: 'Ubuntu', system-ui, sans-serif;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    font-family: var(--font-sans);
+    color: var(--color-brand-ink);
+    background: white;
+  }
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--font-display);
+    letter-spacing: -0.01em;
+    font-weight: 700;
+  }
+  main a:not([class]) {
+    color: var(--color-brand-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+}

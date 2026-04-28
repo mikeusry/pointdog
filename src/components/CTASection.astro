@@ -1,0 +1,30 @@
+---
+interface Props {
+  heading?: string
+  body?: string
+  ctaLabel?: string
+  ctaHref?: string
+}
+
+const {
+  heading = "Got a backend that's holding back your marketing?",
+  body = "We'll take a look. No obligation. We don't take every project — but if it's a fit, we'll tell you.",
+  ctaLabel = 'Talk to us',
+  ctaHref = '/contact',
+} = Astro.props
+---
+
+<section class="border-t border-(--color-brand-border) bg-(--color-brand-surface) px-6 py-14">
+  <div class="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 md:flex-row">
+    <div>
+      <h3 class="font-display text-2xl font-bold">{heading}</h3>
+      <p class="mt-1 text-sm text-(--color-brand-ink-muted)">{body}</p>
+    </div>
+    <a
+      href={ctaHref}
+      class="rounded-md bg-(--color-brand-primary) px-6 py-3 text-sm font-semibold text-white transition-colors hover:bg-(--color-brand-primary-dark)"
+    >
+      {ctaLabel}
+    </a>
+  </div>
+</section>

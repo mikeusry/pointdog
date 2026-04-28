@@ -1,0 +1,61 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import Prose from '../components/Prose.astro'
+import BreadcrumbSchema from '../components/schema/BreadcrumbSchema.astro'
+---
+
+<Layout
+  title="Privacy Policy — point.dog Digital"
+  description="How point.dog collects, uses, and protects information."
+>
+  <BreadcrumbSchema items={[{ name: 'Home', url: '/' }, { name: 'Privacy', url: '/privacy' }]} />
+
+  <Hero
+    eyebrow="Legal"
+    title="Privacy Policy"
+    subtitle={`Last updated: April 2026`}
+    tone="primary"
+  />
+
+  <section class="px-6 py-16">
+    <Prose>
+      <h2>What we collect</h2>
+      <p>
+        When you contact us through the form on this site, we collect: your name, email
+        address, optional company name, what you're after, and your message. That's it. We
+        do not buy or sell contact lists.
+      </p>
+
+      <h2>How we use it</h2>
+      <p>
+        We use your information solely to respond to your inquiry. If we end up working
+        together, your data goes into our project management system. If we don't end up
+        working together, we may keep your information for follow-up but will honor any
+        request to delete it.
+      </p>
+
+      <h2>Tracking on this site</h2>
+      <p>
+        We use Google Tag Manager and a first-party tracking pixel to understand how
+        visitors find and use this site. This helps us measure the effectiveness of our
+        own marketing — exactly what we'd build for our clients.
+      </p>
+      <p>
+        We do not run third-party advertising trackers from data brokers. The pixel is
+        ours, the data is ours, and we don't share or sell it.
+      </p>
+
+      <h2>Cookies</h2>
+      <p>
+        We use cookies for analytics, attribution, and to remember your preferences across
+        sessions. You can disable cookies in your browser settings.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        Questions about this policy: <a href="mailto:mike@point.dog">mike@point.dog</a>.
+      </p>
+    </Prose>
+  </section>
+</Layout>

@@ -1,0 +1,63 @@
+---
+client: Heiser Group
+headline: 'Programmatic SEO across 12+ service cities.'
+summary: 'Astro + Cloudflare Pages. 32 pages from a small content set, fully ranked.'
+marketingPayoff: "Twelve cities ranking organically for cleaning services — without paying SEO retainers per city. The organic traffic compounds while paid ads handle the high-intent keywords."
+stack:
+  - Astro
+  - Cloudflare Pages
+  - Cloudflare KV
+  - Cloudinary
+industry: Home Services
+order: 4
+liveUrl: https://heisergroup.com
+---
+
+## The problem
+
+Heiser Group is an Atlanta-based commercial and residential cleaning company. They wanted
+to rank in **12+ service cities** without:
+
+- Writing 12 different websites
+- Paying an SEO retainer per city
+- Spinning up a giant programmatic SEO content factory that Google would penalize
+
+Most cleaning companies in this position either pay big SEO firms or accept that they only
+rank in their headquarters city. Heiser wanted neither.
+
+## What we built
+
+An **Astro site** with programmatic SEO done right:
+
+- **One `[city].astro` template** that generates a unique, well-written landing page per
+  service area — Atlanta, Marietta, Decatur, Roswell, Sandy Springs, Buckhead, and more
+- **Real local content** — each city page references actual neighborhoods, references local
+  facilities (hospitals, office parks, school districts), and includes appropriate
+  service-area copy
+- **Service-specific pages** — bi-weekly cleaning, monthly cleaning, deep clean, commercial,
+  realty turnover, real estate agent partnerships — each its own indexed route
+- **Case study pages** — Ace Hardware strip-and-wax, Highland Park turnover — these provide
+  third-party credibility for paid traffic landing pages
+- **Cloudflare KV** for the photo gallery — staff can upload photos that persist across
+  deployments without needing a CMS
+
+Total: **32 indexed pages from a small content set.** Each one is unique enough to rank,
+fast enough to convert, and structured enough that Google trusts it.
+
+## Why this is a marketing win
+
+Heiser's organic traffic now compounds month over month. Paid ads cover the immediate
+high-intent searches ("cleaning service near me") while the organic SEO pulls in the long
+tail ("commercial cleaning Roswell GA office park").
+
+The site also doubles as **Heiser's case for real estate agents** — the realty-cleaning and
+real-estate-agent landing pages convert agents who manage rental turnover, compounding the
+B2B lead pipeline alongside the B2C residential traffic.
+
+## Tech stack notes
+
+- Cloudflare Pages because Heiser's volume is low and CF is free at this scale
+- Programmatic SEO with **real per-city content** (not stuffed templates) — Google rewards
+  this and penalizes the lazy version
+- The KV-backed photo gallery is a small touch that means Heiser's team can update the site
+  without involving us — exactly what an agency-built site should enable

@@ -1,0 +1,14 @@
+---
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  '@id': 'https://www.point.dog/#website',
+  name: 'point.dog',
+  alternateName: 'point.dog Digital',
+  url: 'https://www.point.dog',
+  publisher: { '@id': 'https://www.point.dog/#organization' },
+  inLanguage: 'en-US',
+}
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

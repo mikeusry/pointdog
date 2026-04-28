@@ -1,0 +1,58 @@
+---
+client: Banyan Tree Counseling
+headline: 'AI intake chatbot with crisis detection.'
+summary: 'Cloudflare Workers + Claude. Persona routing. Georgia-license filter.'
+marketingPayoff: 'Off-hours intake that converts before the lead bounces. Paid ads driving traffic at midnight are no longer wasted budget — the chatbot pre-qualifies and books while everyone sleeps.'
+stack:
+  - Astro
+  - Cloudflare Pages
+  - Cloudflare Workers
+  - Claude API
+  - Supabase
+industry: Mental Health
+order: 2
+liveUrl: https://athenscounseling.com
+---
+
+## The problem
+
+Banyan Tree (athenscounseling.com) is an Athens-area counseling practice. Their growth
+problem was specific:
+
+- Most therapy inquiries come **outside business hours** — evenings, weekends, 2am
+- A static contact form gets a 24–48 hour reply time
+- By then, the prospect has already booked with someone else
+- And they were running paid Google Ads at all hours, paying for clicks that bounced after
+  staring at a contact form
+
+## What we built
+
+An **AI intake system** on the front of the website:
+
+- **Cloudflare Worker chatbot** powered by Claude — the prospect can have a real intake
+  conversation immediately, any hour
+- **Georgia-license filter** — the chatbot is trained to politely route out-of-state
+  inquiries to appropriate referral resources (Banyan only practices in GA)
+- **Crisis detection** — built-in flagging for self-harm or active crisis language, with
+  immediate escalation to crisis hotlines
+- **Persona routing worker** — separate edge worker that swaps homepage content based on
+  the visitor's apparent persona (parent of a teen, college student, executive, etc.)
+- **Booking integration** — qualified prospects get a booking link before the conversation ends
+
+## Why this is a marketing win
+
+Banyan's paid ads now convert at any hour. The 24-hour-old "contact form lead" went away —
+**every paid click either books a session, qualifies into a callback queue, or self-routes
+to a referral.** Nobody bounces because they couldn't get an answer.
+
+The persona-routing worker quietly improved the conversion rate of the cold traffic
+landing pages by personalizing the language without anyone needing to manage A/B tests.
+
+## Tech stack notes
+
+- Edge-deployed (Cloudflare Workers) so the chatbot responds in under 500ms even from East
+  Asia — Banyan picks up some out-of-state Stanford parents looking for Georgia therapy
+  for their college student
+- Crisis detection is a non-trivial classification problem; we use Claude as a primary
+  filter with conservative thresholds and human escalation
+- Compliance: nothing the chatbot collects is treated as PHI until a human takes the case

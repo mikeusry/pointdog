@@ -1,0 +1,90 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import CTASection from '../components/CTASection.astro'
+import Prose from '../components/Prose.astro'
+import BreadcrumbSchema from '../components/schema/BreadcrumbSchema.astro'
+import { siteConfig } from '../data/siteConfig'
+---
+
+<Layout
+  title="About point.dog Digital"
+  description="point.dog is run by Mike Usry — operator-turned-agency. We build for businesses we'd run ourselves."
+>
+  <BreadcrumbSchema items={[{ name: 'Home', url: '/' }, { name: 'About', url: '/about' }]} />
+
+  <Hero
+    eyebrow="About"
+    title="An operator running an agency."
+    subtitle="point.dog is built on a simple bet: marketing built by people who actually run businesses works better than marketing built by people who never have."
+    tone="primary"
+  />
+
+  <section class="px-6 py-16">
+    <Prose>
+      <h2>Who we are</h2>
+      <p>
+        <strong>point.dog Digital</strong> is run by Mike Usry from Athens, GA. We're a small,
+        senior team. No junior account managers handing your work off to a developer who hands
+        it off to a freelancer. The person you talk to ships your code.
+      </p>
+
+      <h2>Why we run our own businesses</h2>
+      <p>
+        Most agencies build sites and run ads for businesses they don't understand. We took
+        the opposite path: we run <strong>five operating companies</strong> ourselves —
+        across distribution, manufacturing, services, and construction. We feel the pain
+        of every broken integration, every lossy pixel, every SaaS subscription that doesn't
+        fit. Then we fix it.
+      </p>
+      <ul>
+        {
+          siteConfig.operatingEntities.map((e) => (
+            <li>
+              <a href={e.url} target="_blank" rel="noopener">
+                <strong>{e.name}</strong>
+              </a>
+              {' — '}
+              {e.blurb}
+            </li>
+          ))
+        }
+      </ul>
+
+      <h2>What we believe about modern marketing</h2>
+      <p>
+        Google's PMax campaigns. Meta's Advantage+. Whatever AI-driven ad product launches
+        this quarter. They all run on data. They all reward the advertisers feeding them
+        clean first-party signal. They all punish the ones running stock pixels and lossy
+        SaaS attribution.
+      </p>
+      <p>
+        Most small businesses are losing this race because their stack wasn't built for it.
+        Their POS doesn't talk to their CRM. Their site can't fire the conversion event
+        the algorithm needs. Their attribution is "this person came from Google, probably."
+      </p>
+      <p>
+        That's where we come in. We don't sell software. We sell the <em>marketing
+        outcomes</em> that come from doing the technical work nobody else wants to do.
+      </p>
+
+      <h2>Honest about who we work with</h2>
+      <p>
+        We don't take every project. We're best for owner-operated businesses that:
+      </p>
+      <ul>
+        <li>Are spending real money on ads and want them to actually work</li>
+        <li>Have an existing stack that's mostly broken — POS, CRM, e-commerce, fundraising
+        — that needs to be wired together properly</li>
+        <li>Care about owning their data, not renting it</li>
+        <li>Want a long-term partner, not a one-off project</li>
+      </ul>
+      <p>
+        If that's you, <a href="/contact">let's talk</a>. We'll be honest about whether
+        we're a fit.
+      </p>
+    </Prose>
+  </section>
+
+  <CTASection />
+</Layout>

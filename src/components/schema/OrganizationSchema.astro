@@ -1,0 +1,24 @@
+---
+import { siteConfig } from '../../data/siteConfig'
+
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'Organization',
+  '@id': 'https://www.point.dog/#organization',
+  name: siteConfig.company.longName,
+  alternateName: siteConfig.company.name,
+  url: 'https://www.point.dog',
+  logo: 'https://www.point.dog/logo-mark.png',
+  description: siteConfig.company.tagline,
+  email: siteConfig.company.email,
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: siteConfig.company.address.city,
+    addressRegion: siteConfig.company.address.state,
+    addressCountry: 'US',
+  },
+  sameAs: [siteConfig.social.linkedin].filter(Boolean),
+}
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
