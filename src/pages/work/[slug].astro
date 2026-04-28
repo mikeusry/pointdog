@@ -19,8 +19,8 @@ const d = caseStudy.data
 ---
 
 <Layout
-  title={`${d.client} — point.dog case study`}
-  description={d.marketingPayoff}
+  title={d.seoTitle ?? `${d.client} — point.dog case study`}
+  description={d.seoDescription ?? d.marketingPayoff}
   image={d.coverImage}
 >
   <BreadcrumbSchema

@@ -26,6 +26,10 @@ const caseStudies = defineCollection({
     coverImage: z.string().optional(),
     /** External link to live site, if public. */
     liveUrl: z.string().url().optional(),
+    /** SEO-optimized <title> for the case-study page (overrides default). */
+    seoTitle: z.string().optional(),
+    /** SEO-optimized meta description (overrides marketingPayoff). */
+    seoDescription: z.string().optional(),
   }),
 })
 
