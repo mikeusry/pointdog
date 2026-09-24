@@ -1,0 +1,81 @@
+---
+system: Shopify
+category: Ecommerce
+headline: 'Shopify to Google Ads and Meta, with the orders Shopify never sees.'
+seoTitle: 'Shopify Google Ads & Facebook Ads Integration: Offline Orders, Margin & LTV | point.dog'
+description: "Shopify's Google and Meta apps send basic purchase events. We send the rest: phone and wholesale orders, real margin, refunds, and lifetime value, so Google Ads and Meta bid on profitable customers."
+summary: "Shopify's built-in apps send online purchases. Your ads also need the phone orders, the refunds, the margin, and which customers come back."
+dataPulled:
+  - Orders with line items, discounts, and shipping
+  - Refunds, cancellations, and returns
+  - Product cost for margin-based values
+  - Customer order count and lifetime value
+  - New vs. returning customer flag
+  - Click IDs and UTMs captured at checkout
+  - Discount and influencer codes
+destinations:
+  - google-ads
+  - meta
+  - microsoft-ads
+  - ga4
+  - email-sms
+caseStudy: cprc-enough
+order: 1
+relatedGuides:
+  - offline-conversion-tracking
+  - meta-conversions-api
+  - customer-match-custom-audiences
+faqs:
+  - q: "Doesn't Shopify's Google & YouTube app already send conversions?"
+    a: "It sends online purchases, and you should use it. It doesn't know about phone or wholesale orders in other systems, it sends revenue rather than margin, and it doesn't feed Google your repeat-customer and lifetime-value data."
+  - q: 'Can Google Ads bid on profit instead of revenue?'
+    a: "Yes, if you send it profit. We calculate margin per order from product cost and send that as the conversion value, so Google stops chasing low-margin orders that look big."
+  - q: 'What about orders placed over the phone?'
+    a: "That's the most common gap. If phone or wholesale orders live in another order system, we match them back to the original ad click or to hashed customer contact info and upload them as offline conversions."
+  - q: 'Will this double count with the Shopify apps?'
+    a: "Not if it's set up right. Browser and server copies of the same event share an event ID, and offline orders go to a separate conversion action from the online purchase."
+---
+
+## What Shopify's apps do well, and what they miss
+
+Shopify's Google & YouTube app and its Meta app are worth installing. They send online
+purchases from the browser and the server, and they sync your product catalog.
+
+What they don't send:
+
+- **Orders outside Shopify.** Phone orders, wholesale, trade accounts, anything keyed into
+  another system.
+- **Margin.** A $300 order at 15% margin and a $150 order at 60% margin look backwards to
+  Google if you only send revenue.
+- **Refunds and cancellations.** The platform keeps counting sales that came back.
+- **Who's new and who's loyal.** Google and Meta should know when an order came from a
+  first-time buyer versus your fifth-time customer. You probably want to pay more for the
+  first one.
+- **Lifetime value.** Which campaigns brought in customers who kept buying.
+
+## We run this on our own brand first
+
+Southland Organics, one of our brands, sells on Shopify and takes larger orders by phone in a
+separate order system. When Google only saw Shopify, it optimized for small online orders.
+Now phone orders and Shopify purchases feed Google as separate conversion actions from our
+data warehouse, and customer segments sync to Google as Customer Match audiences.
+
+## What we build
+
+1. **Checkout capture.** Click IDs and UTMs saved to the order through Shopify's customer
+   events, so every order carries its ad source.
+2. **Order bridge.** A webhook or scheduled sync reads orders, refunds, and customer history
+   and computes value (revenue or margin).
+3. **Offline orders.** Orders from your other systems matched to the ad click or to hashed
+   email and phone, uploaded daily.
+4. **Platform sends.** [Google's Data Manager API](/guides/google-ads-data-manager-api),
+   [Meta's Conversions API](/guides/meta-conversions-api), Microsoft offline conversions,
+   and GA4.
+5. **Audiences.** Customers, top spenders, lapsed buyers, and recent purchasers, synced
+   daily. See [Customer Match and custom audiences](/guides/customer-match-custom-audiences).
+
+## Beyond ads
+
+The same order data can feed your email and SMS platform (segments by what people bought and
+when) or another system entirely. For the CPRC ENOUGH! campaign, we pipe every Shopify order
+into their donor CRM with influencer attribution in real time.

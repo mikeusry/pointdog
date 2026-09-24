@@ -3,12 +3,14 @@ import { getCollection } from 'astro:content'
 import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
 import CaseStudyCard from '../components/CaseStudyCard.astro'
+import LinkCard from '../components/LinkCard.astro'
 import LocalBusinessSchema from '../components/schema/LocalBusinessSchema.astro'
 import OrganizationSchema from '../components/schema/OrganizationSchema.astro'
 import WebSiteSchema from '../components/schema/WebSiteSchema.astro'
 import { siteConfig } from '../data/siteConfig'
 
 const cases = (await getCollection('caseStudies')).sort((a, b) => a.data.order - b.data.order)
+const integrations = (await getCollection('integrations')).sort((a, b) => a.data.order - b.data.order)
 ---
 
 <Layout
@@ -166,6 +168,45 @@ const cases = (await getCollection('caseStudies')).sort((a, b) => a.data.order -
             change pricing or get acquired and break your stack tomorrow.
           </p>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- INTEGRATIONS — the bridge, by source system -->
+  <section class="border-t border-(--color-brand-border) bg-(--color-brand-surface) px-6 py-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="text-center">
+        <p class="text-sm font-semibold tracking-wider text-(--color-brand-primary) uppercase">
+          Integrations
+        </p>
+        <h2 class="font-display mt-3 text-3xl font-bold md:text-4xl">
+          Wherever your customers live, we wire it into your ads.
+        </h2>
+        <p class="mx-auto mt-4 max-w-2xl text-(--color-brand-ink-muted)">
+          Your store, CRM, or field software knows who actually paid. We send that to Google,
+          Meta, and Microsoft so they bid on revenue. Anything with an open API.
+        </p>
+      </div>
+      <div class="mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          integrations.map((i) => (
+            <LinkCard
+              href={`/integrations/${i.id}`}
+              eyebrow={i.data.category}
+              title={i.data.system}
+              body={i.data.summary}
+              cta="See the bridge →"
+            />
+          ))
+        }
+      </div>
+      <div class="mt-10 flex flex-wrap justify-center gap-6 text-sm font-semibold">
+        <a href="/integrations" class="text-(--color-brand-primary) hover:underline">
+          All integrations →
+        </a>
+        <a href="/guides" class="text-(--color-brand-primary) hover:underline">
+          How ad platforms learn: the guides →
+        </a>
       </div>
     </div>
   </section>

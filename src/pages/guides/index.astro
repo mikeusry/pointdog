@@ -1,0 +1,44 @@
+---
+import { getCollection } from 'astro:content'
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+import LinkCard from '../../components/LinkCard.astro'
+import CTASection from '../../components/CTASection.astro'
+import BreadcrumbSchema from '../../components/schema/BreadcrumbSchema.astro'
+
+export const prerender = true
+
+const guides = (await getCollection('guides')).sort((a, b) => a.data.order - b.data.order)
+---
+
+<Layout
+  title="Guides: Conversion Tracking, Conversions API & First-Party Data | point.dog"
+  description="Plain-English guides to the data plumbing behind modern ads: Google's Data Manager API, Meta Conversions API, offline conversions, click IDs, Customer Match, and server-side tracking."
+>
+  <BreadcrumbSchema items={[{ name: 'Home', url: '/' }, { name: 'Guides', url: '/guides' }]} />
+
+  <Hero
+    eyebrow="Guides"
+    title="How ad platforms actually learn."
+    subtitle="Google and Meta bid on whatever signal you send them. These guides explain how to send the good stuff — booked jobs, paid invoices, real revenue — instead of clicks and form fills."
+    tone="primary"
+  />
+
+  <section class="px-6 py-20">
+    <div class="mx-auto grid max-w-6xl gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {
+        guides.map((g) => (
+          <LinkCard
+            href={`/guides/${g.id}`}
+            eyebrow={g.data.keyword}
+            title={g.data.title}
+            body={g.data.summary}
+            cta="Read the guide →"
+          />
+        ))
+      }
+    </div>
+  </section>
+
+  <CTASection />
+</Layout>

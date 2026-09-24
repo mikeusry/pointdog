@@ -27,6 +27,12 @@ export const siteConfig = {
     },
   },
 
+  /** Byline on guides and their TechArticle schema. */
+  author: {
+    name: 'Mike Usry',
+    url: '/about',
+  },
+
   // Social
   social: {
     linkedin: 'https://www.linkedin.com/company/point-dog-digital',
@@ -39,6 +45,8 @@ export const siteConfig = {
 
   primaryNav: [
     { label: 'Work', href: '/work' },
+    { label: 'Integrations', href: '/integrations' },
+    { label: 'Guides', href: '/guides' },
     { label: 'How', href: '/#why-we-build' },
     { label: 'About', href: '/about' },
   ] as NavItem[],

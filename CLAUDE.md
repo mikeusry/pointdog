@@ -20,7 +20,10 @@ Cloned from drain-tree (which cloned from SpraySquad). Same conventions:
   social, operating entities. Never hardcode these in pages.
 - `src/layouts/Layout.astro` handles meta, OG, canonical, GTM, pixel, fonts, schema prop.
 - `src/components/schema/` for reusable JSON-LD blobs.
-- `src/content/case-studies/` MDX files = the only content collection.
+- Content collections (MDX): `src/content/case-studies/`, `src/content/guides/`,
+ `src/content/integrations/`. Schemas in `src/content/config.ts`.
+- `src/data/destinations.ts` defines where bridged data lands (Google Ads, Meta, …) and
+ which guide explains each; integration frontmatter references these slugs.
 - `astro.config.mjs` `customPages` array carries SSR routes the sitemap can't auto-discover.
 
 ## Page map
@@ -28,6 +31,21 @@ Cloned from drain-tree (which cloned from SpraySquad). Same conventions:
 - `/` — Home: hero, recent work, "Why we build the backend" section, outcomes, operating entities
 - `/work` — All case studies
 - `/work/[slug]` — Individual case study (Hamilton, Banyan, CPRC, Heiser)
+- `/integrations` — Hub: source systems we bridge to ad platforms ("anything with an open API")
+- `/integrations/[slug]` — One page per source system (Shopify, HubSpot, Salesforce, field
+ service software, MLS/RESO), not per system × platform pair — pair keywords are 10–70/mo
+ each, so pairs are covered as sections inside the system page
+- `/guides` — Explainers that carry the search traffic (gclid, Conversions API, Data
+ Manager API, offline conversions, Customer Match, server-side tracking, first-party data)
+- `/guides/[slug]` — Individual guide (TechArticle + FAQPage schema)
+
+## SEO strategy (Sep 2026)
+
+Don't chase head terms ("customer data platform", "marketing agency") — software vendors and
+national agencies own them, and local Athens terms are ~10–20/mo. Win the specific,
+high-intent searches that describe the work: click IDs, Conversions API, offline conversions,
+Data Manager API, and "[system] + [ad platform]". Guides bring the traffic; integration pages
+convert it; case studies are the proof. Only claim integrations and results we can back up.
 - `/about` — Mike + operator-turned-agency story + who we work with
 - `/contact` — Contact form → `mike@point.dog` via SendGrid
 - `/thank-you` — Post-submit

@@ -1,0 +1,37 @@
+---
+import { siteConfig } from '../../data/siteConfig'
+
+interface Props {
+  headline: string
+  description: string
+  url: string
+  published: Date
+  updated: Date
+  keyword?: string
+}
+
+const { headline, description, url, published, updated, keyword } = Astro.props
+const siteUrl = 'https://www.point.dog'
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'TechArticle',
+  headline,
+  description,
+  url: url.startsWith('http') ? url : `${siteUrl}${url}`,
+  datePublished: published.toISOString().split('T')[0],
+  dateModified: updated.toISOString().split('T')[0],
+  ...(keyword ? { keywords: keyword } : {}),
+  author: {
+    '@type': 'Person',
+    name: siteConfig.author.name,
+    url: `${siteUrl}${siteConfig.author.url}`,
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: siteConfig.company.longName,
+    url: siteUrl,
+  },
+}
+---
+
+<script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />

@@ -1,0 +1,83 @@
+---
+title: 'Customer Match and Meta custom audiences from your CRM'
+seoTitle: 'Google Customer Match & Meta Custom Audiences From Your CRM | point.dog'
+description: 'How to turn your customer list into Google Customer Match and Meta custom audiences that update themselves: exclusions, lookalikes, win-backs, and the eligibility rules to know first.'
+summary: "Your customer list is the best targeting data you own. Synced daily, it stops you paying to reach people who already buy and helps the platforms find more like your best ones."
+keyword: 'customer match'
+published: 2026-09-24
+updated: 2026-09-24
+order: 5
+relatedGuides:
+  - first-party-data
+  - meta-conversions-api
+  - offline-conversion-tracking
+relatedIntegrations:
+  - field-service-software
+  - shopify
+faqs:
+  - q: 'What is Customer Match?'
+    a: "Google's feature for uploading your own customer list (hashed emails, phones, and addresses) so you can reach, exclude, or model audiences from those people across Search, YouTube, Gmail, and other Google surfaces."
+  - q: "What's the minimum list size?"
+    a: 'Google requires at least 100 active members for a Customer Match list. Meta needs at least 100 people from a single country in a source audience to build a lookalike. Match rates are rarely 100%, so start with more.'
+  - q: 'Can any Google Ads account use Customer Match?'
+    a: 'The account needs a good policy-compliance and payment history. Some Customer Match features are reserved for accounts with at least 90 days of history and more than $50,000 in lifetime spend, so check what your account qualifies for.'
+  - q: 'Can real estate or lending businesses use lookalike audiences?'
+    a: "Housing, employment, and credit ads fall under special ad category rules on both Meta and Google, which restrict audience targeting. Plan around listing feeds and strong landing pages instead."
+---
+
+## Why your customer list is your best targeting
+
+Every ad platform is trying to guess who your customers are. You already know. Uploading that
+list, hashed and consented, lets you:
+
+- **Exclude current customers** from new-customer campaigns, so you stop paying to reach
+  people who would have called you anyway.
+- **Seed lookalikes** from your best customers, not all customers.
+- **Win back** people who haven't bought in a year.
+- **Follow up** on unsold estimates, abandoned quotes, and expired memberships.
+
+## The groups worth building
+
+| Group | Use it for |
+|---|---|
+| All customers | Exclude from acquisition campaigns |
+| Top 20% by lifetime value | Lookalike and similar-audience seeds |
+| Bought once, not in 12 months | Win-back offers |
+| Open estimates or quotes | Retargeting with follow-up or financing offers |
+| Active members or subscribers | Exclude, or cross-sell only |
+| Customers in the last 30 days | Review and referral asks |
+
+These should come straight from your system of record: store, CRM, or field-service
+software, not a spreadsheet someone exports twice a year.
+
+## Google Customer Match: rules to know
+
+- **Eligibility:** good policy compliance and payment history. Some features need 90+ days of
+  account history and more than $50,000 lifetime spend.
+- **Size:** at least 100 active members. Memberships older than 540 days stop counting unless
+  they're refreshed.
+- **Format:** emails, phones, names, and addresses, normalized and hashed with SHA-256.
+- **Where uploads go:** audience uploads are available through Google's Data Manager API,
+  the same place offline conversions now go. See
+  [Google's Data Manager API](/guides/google-ads-data-manager-api).
+
+## Meta custom audiences: rules to know
+
+- **Customer list audiences** from hashed emails and phones, plus extra identifiers for
+  better matching.
+- **Lookalikes** need a source of at least 100 people from one country. A smaller list of
+  high-value customers usually beats a big list of everyone.
+- **Special ad categories** (housing, employment, credit, social issues) limit targeting
+  and lookalikes.
+
+## Why daily sync beats CSV uploads
+
+A list uploaded in March is wrong by May. New customers are still in your acquisition
+campaigns, and last month's buyers are getting win-back ads. An automated daily sync keeps
+every group current with no one remembering to do it.
+
+## Consent and privacy
+
+Only upload people who gave you their information directly and were told how it's used. Say
+so in your privacy policy. Both platforms require it, and it's the right way to treat
+customers.

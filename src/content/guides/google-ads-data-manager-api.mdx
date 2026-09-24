@@ -1,0 +1,97 @@
+---
+title: "Google's Data Manager API: what changed for offline conversions"
+seoTitle: 'Google Ads Data Manager API: The June 2026 Offline Conversion Change | point.dog'
+description: 'On June 15, 2026, Google moved offline conversion and enhanced-conversions-for-leads uploads to the Data Manager API. What changed, how to tell if your CRM upload broke, and how to fix it.'
+summary: 'Google moved offline conversion uploads to a new API on June 15, 2026. A lot of CRM-to-Google setups stopped working and nobody noticed.'
+keyword: 'google ads data manager'
+published: 2026-09-24
+updated: 2026-09-24
+order: 1
+relatedGuides:
+  - offline-conversion-tracking
+  - click-ids-gclid-fbclid-msclkid
+  - customer-match-custom-audiences
+relatedIntegrations:
+  - hubspot
+  - salesforce
+faqs:
+  - q: 'Did my offline conversions stop working on June 15, 2026?'
+    a: 'If your CRM or a custom script uploaded offline conversions or enhanced conversions for leads through the Google Ads API, and it was not allowlisted for legacy access, yes. Check the offline conversion action in Google Ads for recent imports. No new conversions since mid-June is the tell.'
+  - q: 'Do I need a developer to switch to the Data Manager API?'
+    a: "If you upload with a spreadsheet or a native connector inside Google Ads, Google handles it. If a script, a middleware tool, or a custom integration does the upload, someone has to rewrite that part against the new API."
+  - q: 'How old can a click be for an offline conversion?'
+    a: 'For uploads keyed on a gclid, the conversion must be uploaded within 90 days of the click. Enhanced conversions for leads, which match on hashed email or phone, have a 63-day limit.'
+  - q: 'Does this affect Customer Match?'
+    a: "The June 15 cutoff named offline conversion import and enhanced conversions for leads. Data Manager also handles audience uploads, so if you're building or rebuilding Customer Match syncs, build them there."
+---
+
+## The short version
+
+On **June 15, 2026**, Google stopped accepting two kinds of uploads through the Google Ads API:
+
+- **Offline conversion imports** (the "this click became a sale" upload, keyed on the gclid)
+- **Enhanced conversions for leads** (the same idea, matched on hashed email or phone instead of the click ID)
+
+Both now go through Google's **Data Manager API**. Developer tokens that weren't making these
+requests in the first half of 2026 weren't allowlisted for legacy access. Treat any legacy
+access you do have as temporary.
+
+That matters because offline conversions are how Google learns which clicks turned into
+**revenue**, not just form fills. When that feed stops, Google's bidding goes back to guessing.
+
+## Why most businesses didn't notice
+
+Nothing in your ads account turns red. Campaigns keep spending. The only symptom is quiet:
+your offline conversion action stops receiving new imports, and your Smart Bidding strategy
+slowly re-learns on whatever signal is left, usually the website form fill.
+
+Common setups that broke:
+
+- A custom script or cloud function that pushed closed deals from a CRM
+- Middleware (a Zapier-style tool or an agency's connector) that hadn't migrated
+- An old "we set this up once in 2023" integration nobody has looked at since
+
+## How to check yours in five minutes
+
+1. In Google Ads, go to **Goals → Conversions** and open your offline or imported
+   conversion action.
+2. Look at the most recent conversion date. If it stops around mid-June 2026, your upload
+   broke.
+3. Check the **uploads** history for errors.
+4. Look at the bid strategy on your main campaigns. If it's optimizing to that offline action
+   and the action went quiet, the campaign has been learning on stale data since June.
+
+## The fix
+
+There are three paths, depending on how your data moves today.
+
+**Native connectors.** Google Ads has a Data manager area with connectors for common tools
+(HubSpot, Salesforce, Google Sheets, BigQuery and others). If your data lives in one of those
+and your needs are simple, this can be enough.
+
+**Rewrite the custom upload.** If you have a script or pipeline, point it at the Data Manager
+API. The concepts are the same: a conversion, a timestamp, a value, and an identifier (click
+ID or hashed email and phone). The request format and authentication are different.
+
+**Build it properly this time.** If the old upload only sent "lead" with no value, this is the
+moment to send what Google actually needs: booked, sold, and paid events with real revenue
+attached. That's the difference between Google finding more leads and Google finding more
+**customers**. See [offline conversion tracking](/guides/offline-conversion-tracking).
+
+## What a good upload looks like
+
+- **Daily, automated.** Not a monthly CSV.
+- **Keyed two ways.** The gclid (or gbraid/wbraid on iOS) when you have it, plus hashed email
+  and phone as a fallback. See [click IDs explained](/guides/click-ids-gclid-fbclid-msclkid).
+- **Revenue attached.** The invoice or order total, not a flat $1.
+- **Inside the window.** Within 90 days of the click for gclid uploads, 63 days for enhanced
+  conversions for leads.
+- **Corrections included.** Refunds and cancellations sent back as adjustments, so Google
+  doesn't learn from sales that didn't stick.
+
+## Where point.dog fits
+
+We build the bridge between the system your customers actually live in (CRM, store, field
+service software, practice management) and Google's Data Manager API, plus the same data to
+Meta and Microsoft. If your offline conversions went quiet in June, that's usually a small,
+well-defined project, not a rebuild.

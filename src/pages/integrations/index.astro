@@ -1,0 +1,124 @@
+---
+import { getCollection } from 'astro:content'
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+import LinkCard from '../../components/LinkCard.astro'
+import CTASection from '../../components/CTASection.astro'
+import BreadcrumbSchema from '../../components/schema/BreadcrumbSchema.astro'
+import { destinations, destinationSlugs } from '../../data/destinations'
+
+export const prerender = true
+
+const integrations = (await getCollection('integrations')).sort((a, b) => a.data.order - b.data.order)
+
+const alsoBridged = [
+  'Pipedrive',
+  'Zoho CRM',
+  'GoHighLevel',
+  'Keap',
+  'Follow Up Boss',
+  'Clio',
+  'Square',
+  'Stripe',
+  'QuickBooks Online',
+  'WooCommerce',
+  'Calendly',
+  'Acuity Scheduling',
+  'Mindbody',
+  'Airtable',
+  'NeonCRM',
+  'Klaviyo',
+]
+---
+
+<Layout
+  title="Integrations: Connect Your CRM, Store, or Field Software to Google & Meta Ads | point.dog"
+  description="We connect the system your customers live in — Shopify, HubSpot, Salesforce, ServiceTitan, your MLS, anything with an open API — to Google Ads, Meta, Microsoft Ads, and GA4. Ads bid on revenue, not clicks."
+>
+  <BreadcrumbSchema
+    items={[{ name: 'Home', url: '/' }, { name: 'Integrations', url: '/integrations' }]}
+  />
+
+  <Hero
+    eyebrow="Integrations"
+    title="Your customer data, wired into your ads."
+    subtitle="Your store, CRM, or field software knows who actually bought. Your ad platforms don't. We build the bridge — anything with an open API — so Google and Meta bid on real revenue."
+    tone="primary"
+  />
+
+  <section class="px-6 py-20">
+    <div class="mx-auto max-w-6xl">
+      <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+        {
+          integrations.map((i) => (
+            <LinkCard
+              href={`/integrations/${i.id}`}
+              eyebrow={i.data.category}
+              title={i.data.headline}
+              body={i.data.summary}
+              cta="See the bridge →"
+            />
+          ))
+        }
+      </div>
+    </div>
+  </section>
+
+  <section class="border-y border-(--color-brand-border) bg-(--color-brand-surface) px-6 py-20">
+    <div class="mx-auto max-w-3xl">
+      <p class="text-sm font-semibold tracking-wider text-(--color-brand-primary) uppercase">
+        Every bridge, same shape
+      </p>
+      <h2 class="font-display mt-3 text-3xl font-bold md:text-4xl">Pull. Clean. Push.</h2>
+      <ol class="mt-8 space-y-6 text-lg leading-relaxed">
+        <li>
+          <strong>Pull</strong> the outcomes from the system of record: orders, booked jobs, paid
+          invoices, closed deals, lifetime value. Not just the lead.
+        </li>
+        <li>
+          <strong>Clean</strong> the identities: one record per customer, standardized email and
+          phone, the ad click that started it. Clean identities are what get records matched to
+          real people on Google and Meta.
+        </li>
+        <li>
+          <strong>Push</strong> the result where it earns money:
+          {
+            destinationSlugs.map((slug, idx) => {
+              const dest = destinations[slug]
+              const sep = idx === destinationSlugs.length - 1 ? '.' : idx === destinationSlugs.length - 2 ? ', and ' : ', '
+              return (
+                <Fragment>
+                  {dest.guide ? <a href={`/guides/${dest.guide}`}>{dest.name}</a> : dest.name}
+                  {sep}
+                </Fragment>
+              )
+            })
+          }
+        </li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="px-6 py-20">
+    <div class="mx-auto max-w-4xl text-center">
+      <h2 class="font-display text-2xl font-bold md:text-3xl">Don't see yours?</h2>
+      <p class="mx-auto mt-4 max-w-2xl text-(--color-brand-ink-muted)">
+        If it has an open API, we can bridge it. A few more systems in that category:
+      </p>
+      <ul class="mt-8 flex flex-wrap justify-center gap-2">
+        {
+          alsoBridged.map((name) => (
+            <li class="rounded-full bg-(--color-brand-surface) px-3 py-1 text-sm text-(--color-brand-ink-muted) ring-1 ring-(--color-brand-border)">
+              {name}
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </section>
+
+  <CTASection
+    heading="What system are your customers in?"
+    body="Tell us. If it has an API, we'll show you what your ads are missing."
+  />
+</Layout>

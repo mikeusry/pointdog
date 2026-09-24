@@ -1,0 +1,67 @@
+---
+system: HubSpot
+category: CRM
+headline: 'HubSpot to Google Ads and Meta, with real deal revenue.'
+seoTitle: 'HubSpot Google Ads Integration: Send Closed Deals & Revenue to Google and Meta | point.dog'
+description: "HubSpot can sync lifecycle stages to your ad accounts. We send what the bidding algorithms really need, closed-deal revenue tied to the original click, plus lifetime value and segments back into HubSpot for your sales team."
+summary: "HubSpot knows which leads turned into revenue. We make sure Google, Meta, and Microsoft know it too, and push customer value back into HubSpot for sales."
+dataPulled:
+  - Contacts and lifecycle stages
+  - Deals, pipeline stages, amounts, and close dates
+  - Stored click IDs (gclid, fbclid, msclkid) and original source
+  - Form submissions and meeting bookings
+  - Company and owner fields for segmentation
+destinations:
+  - google-ads
+  - meta
+  - microsoft-ads
+  - ga4
+order: 2
+relatedGuides:
+  - offline-conversion-tracking
+  - click-ids-gclid-fbclid-msclkid
+  - google-ads-data-manager-api
+faqs:
+  - q: "Doesn't HubSpot already sync conversions to Google Ads?"
+    a: "HubSpot's ads tools can send lifecycle stage changes to Google and Meta, and for simple setups that's enough. The usual gaps: values are often fixed per stage rather than the actual deal amount, click IDs aren't reliably captured on every form, and Microsoft Ads isn't covered."
+  - q: 'How do we get the gclid into HubSpot?'
+    a: 'A small script on your site stores click IDs in a first-party cookie and fills hidden fields on every HubSpot form. Each click ID gets its own contact property, so it travels with the contact to the deal.'
+  - q: 'Can you push data into HubSpot, not just out of it?'
+    a: 'Yes. We regularly push lifetime value, order history, and customer segments from other systems (a store, an order system, a data warehouse) into HubSpot contact properties so sales sees the full picture.'
+---
+
+## The gap between a HubSpot lead and a Google conversion
+
+Most HubSpot setups tell Google Ads one thing: *a form was submitted.* HubSpot knows much
+more. It knows which of those contacts became a sales-qualified lead, which ones opened a
+deal, and which deals closed and for how much.
+
+Google, Meta, and Microsoft don't know any of that unless you send it. So they optimize for
+form fills, and your sales team keeps getting leads that look nothing like your customers.
+
+## What we build
+
+1. **Click ID capture on every form.** gclid, gbraid/wbraid, fbc, and msclkid saved as
+   HubSpot contact properties, plus hashed email and phone as a fallback. See
+   [click IDs explained](/guides/click-ids-gclid-fbclid-msclkid).
+2. **Deal-stage conversions.** When a deal hits a stage you care about (meeting held,
+   proposal sent, closed-won), a sync sends that conversion with the **actual deal amount**,
+   or a predicted value for early stages.
+3. **Platform sends.** Google through the
+   [Data Manager API](/guides/google-ads-data-manager-api), Meta through the
+   [Conversions API](/guides/meta-conversions-api), and Microsoft offline conversions.
+4. **Corrections.** Deals that fall apart or get refunded are sent back as adjustments.
+
+## Data flowing the other way
+
+HubSpot is often where sales lives, but not where the customer history lives. For our own
+companies we push lifetime value, purchase history, and customer segments from our data
+warehouse into HubSpot every day, so a rep opening a contact sees what that customer
+actually buys before picking up the phone.
+
+## When HubSpot's native sync is enough
+
+If you have a short sales cycle, one product, and deals that are all roughly the same size,
+HubSpot's built-in ad conversion events may be all you need. Turn them on first. We come in
+when deal values vary, when there's revenue outside HubSpot, or when you need Microsoft Ads
+and audiences built from deal data.

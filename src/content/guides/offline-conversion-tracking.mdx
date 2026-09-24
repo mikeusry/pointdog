@@ -1,0 +1,91 @@
+---
+title: 'Offline conversion tracking: make your ads bid on revenue'
+seoTitle: 'Offline Conversion Tracking & Value-Based Bidding for Small Businesses | point.dog'
+description: 'How offline conversion tracking works, why form-fill conversions train your ads on the wrong people, and how to send booked jobs, closed deals, and paid invoices back to Google, Meta, and Microsoft.'
+summary: "Your ads optimize for whatever you call a conversion. If that's a form fill, you'll get more form fills. Offline conversions teach them to find customers who pay."
+keyword: 'offline conversion tracking'
+published: 2026-09-24
+updated: 2026-09-24
+order: 4
+relatedGuides:
+  - google-ads-data-manager-api
+  - click-ids-gclid-fbclid-msclkid
+  - first-party-data
+relatedIntegrations:
+  - field-service-software
+  - hubspot
+  - shopify
+faqs:
+  - q: 'What is an offline conversion?'
+    a: "Any valuable outcome that happens after the click and outside the ad platform's view: a booked appointment, a completed job, a signed contract, a paid invoice, a phone order. You send it back to the ad platform so it can learn which clicks were worth it."
+  - q: 'What value should I send?'
+    a: "The real revenue if you have it: the invoice or order total. If you bid on early stages like 'appointment booked', send a predicted value based on your average close rate and ticket size."
+  - q: 'How many conversions do I need for value-based bidding?'
+    a: "More is better, and it needs to be steady. If you only close a handful of sales a month, optimize to an earlier stage that happens more often, like a booked appointment, and give it a predicted value."
+  - q: 'What about refunds and cancellations?'
+    a: 'Send them back. Google supports conversion adjustments to retract or restate a conversion. Otherwise the platform keeps learning from sales that never stuck.'
+---
+
+## The problem with form-fill conversions
+
+Google, Meta, and Microsoft are very good at finding more of whatever you tell them is a
+conversion. Most small businesses tell them "someone filled out the form."
+
+So the algorithm finds form-fillers. Some of them are great customers. Some are tire-kickers,
+spam, out-of-area, or people who wanted a price and never picked up the phone. To the ad
+platform they all look like wins.
+
+## A real example: our own
+
+Southland Organics, one of our own brands, sells online through Shopify and by phone. The
+phone orders are usually larger, and they live in a separate order system. Google only saw
+the Shopify orders, so it optimized for small online orders and knew nothing about the big
+ones.
+
+The fix wasn't a better ad. It was an **offline conversion upload** that tells Google about
+the phone orders too, with real order values, through a data layer we built in BigQuery.
+
+## How offline conversion tracking works
+
+1. **Capture at the click.** Store the click ID (`gclid`, `fbclid`, `msclkid`) and the
+   contact's email and phone with every lead. See
+   [click IDs explained](/guides/click-ids-gclid-fbclid-msclkid).
+2. **Carry it through.** The IDs live on the lead or customer record in your CRM, store, or
+   field-service software.
+3. **Watch for outcomes.** Booked, quoted, sold, completed, paid: whatever stages you track.
+4. **Send them back daily.** Each outcome goes to the ad platform with the click ID or
+   hashed contact info, a timestamp, and a value.
+5. **Bid on it.** Set the valuable stage as the primary conversion and let the bid strategy
+   (Maximize conversion value, target ROAS) optimize for it.
+
+## Which stage to optimize for
+
+| If you close... | Optimize for | Value to send |
+|---|---|---|
+| Plenty of sales every week | Sale or paid invoice | Actual revenue |
+| A few sales a month | Booked appointment or qualified lead | Predicted value (close rate × average ticket) |
+| Long sales cycles (60+ days) | An earlier qualified stage | Predicted value, with the sale as a secondary conversion |
+
+Keep the other stages as secondary conversions for reporting. Only one or two should drive
+bidding.
+
+## The platform specifics
+
+- **Google Ads:** uploads now go through the Data Manager API. gclid uploads within 90 days
+  of the click, enhanced conversions for leads within 63 days. See
+  [Google's Data Manager API](/guides/google-ads-data-manager-api).
+- **Meta:** send CRM and offline events through the Conversions API. See
+  [Meta Conversions API](/guides/meta-conversions-api).
+- **Microsoft Ads:** offline conversions keyed on `msclkid` within 90 days, or enhanced
+  conversions with hashed email or phone.
+
+## What usually goes wrong
+
+- **Flat values.** Every conversion worth $1 teaches the platform nothing about which
+  customers matter.
+- **Monthly uploads.** The algorithm learns from fresh data. Daily or better.
+- **Double counting.** The website form and the offline upload both count as the primary
+  conversion. Pick one to bid on.
+- **No refunds.** Cancelled jobs and returned orders stay counted forever.
+- **Nobody watching.** The upload breaks, campaigns keep spending, nobody notices for months.
+  Monitor it.

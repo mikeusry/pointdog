@@ -1,0 +1,93 @@
+---
+title: 'First-party data for a small business'
+seoTitle: 'First-Party Data Strategy for Small Businesses | point.dog'
+description: 'What first-party data is, why it now decides how well your ads perform, the data you already have in your CRM, store, or scheduling software, and a practical way to put it to work.'
+summary: "You already own the data that makes ads work: who bought, what they paid, and when. It's just stuck in software your marketing never touches."
+keyword: 'first party data'
+published: 2026-09-24
+updated: 2026-09-24
+order: 7
+relatedGuides:
+  - offline-conversion-tracking
+  - customer-match-custom-audiences
+  - server-side-tracking
+relatedIntegrations:
+  - shopify
+  - hubspot
+  - field-service-software
+faqs:
+  - q: 'What is first-party data?'
+    a: 'Information your business collects directly from customers: purchases, jobs, invoices, emails, phone numbers, bookings, and on-site behavior with consent. It belongs to you, not to a platform or a data broker.'
+  - q: 'Why does first-party data matter more now?'
+    a: "Browsers and phones share less with ad platforms than they used to. Safari and Firefox block third-party cookies, iOS asks permission before apps can track, and ad blockers are common. The platforms fill the gap with data advertisers send them directly."
+  - q: 'Do I need a customer data platform (CDP)?'
+    a: "You need what a CDP does: one clean record per customer, fed to your ads and email. For most small businesses that's a small database and a few automated syncs, not an enterprise software contract."
+  - q: 'Is it legal to use customer data for advertising?'
+    a: "Yes, with consent and disclosure. Collect it directly, say in your privacy policy how it's used, hash it before it goes to ad platforms, and honor opt-outs."
+---
+
+## What it is
+
+**First-party data** is what your business knows about its own customers because they told
+you or bought from you: names, emails, phone numbers, orders, jobs, invoices, bookings,
+memberships, and what they did on your site with consent.
+
+It's different from third-party data (bought from brokers or inferred by platforms), and
+it's the most valuable data you'll ever have for marketing.
+
+## Why it decides ad performance now
+
+Ad platforms used to watch people across the internet and figure out who your customers were.
+They see much less now:
+
+- Safari and Firefox block third-party cookies.
+- iOS asks permission before apps can track, and most people say no.
+- Ad blockers and privacy tools are everywhere.
+
+So Google and Meta lean on what advertisers send them directly. The business that sends
+*"this click became a $3,800 customer"* beats the one that sends *"someone filled out a
+form"* every time.
+
+## What you already have
+
+Most small businesses are sitting on excellent first-party data. It's just in software the
+marketing never touches:
+
+| Where it lives | What it knows |
+|---|---|
+| Store (Shopify, WooCommerce, Square) | Orders, margins, repeat purchases, refunds |
+| CRM (HubSpot, Salesforce, Pipedrive) | Leads, deal stages, closed revenue |
+| Field service (ServiceTitan, Housecall Pro, Jobber) | Booked jobs, invoices, equipment, memberships |
+| Scheduling and practice software | Appointments, show rates, repeat visits |
+| Accounting (QuickBooks, Xero) | Who actually paid |
+
+## Putting it to work
+
+**1. Capture the link to the ad.** Store the click ID and contact info with every lead. See
+[click IDs explained](/guides/click-ids-gclid-fbclid-msclkid).
+
+**2. Keep one clean record per customer.** Standardized emails and phones, merged
+duplicates, lifetime value, last purchase. This is what people mean by a CDP.
+
+**3. Send outcomes to the ad platforms.** Revenue-backed conversions to Google, Meta, and
+Microsoft. See [offline conversion tracking](/guides/offline-conversion-tracking).
+
+**4. Build audiences that update themselves.** Exclusions, lookalikes, win-backs. See
+[Customer Match and custom audiences](/guides/customer-match-custom-audiences).
+
+**5. Use it on your own site and email.** Pages built from real records, emails segmented by
+what people actually bought.
+
+## How we do it for our own companies
+
+Southland Organics, one of our brands, pulls Shopify, GA4, email, call tracking, and CRM data
+into one BigQuery warehouse. From there, automated syncs push lifetime value and customer
+segments back into HubSpot for the sales team and send conversions to the ad platforms. Same
+pattern we build for clients, sized to the business.
+
+## You don't need an enterprise CDP
+
+The enterprise customer data platforms are built for companies with data teams. A small
+business needs the same result (one clean customer record, feeding ads and email) with a
+fraction of the machinery: a database, a few automated syncs, and someone who understands
+both the APIs and the marketing.

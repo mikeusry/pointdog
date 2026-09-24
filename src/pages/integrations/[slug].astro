@@ -1,0 +1,138 @@
+---
+import { getCollection, getEntry, render } from 'astro:content'
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+import Prose from '../../components/Prose.astro'
+import LinkCard from '../../components/LinkCard.astro'
+import CaseStudyCard from '../../components/CaseStudyCard.astro'
+import FaqSection from '../../components/FaqSection.astro'
+import CTASection from '../../components/CTASection.astro'
+import BreadcrumbSchema from '../../components/schema/BreadcrumbSchema.astro'
+import { destinations } from '../../data/destinations'
+import { resolveGuides } from '../../lib/entries'
+
+export const prerender = true
+
+export async function getStaticPaths() {
+  const integrations = await getCollection('integrations')
+  return integrations.map((i) => ({ params: { slug: i.id }, props: { integration: i } }))
+}
+
+const { integration } = Astro.props
+const { Content } = await render(integration)
+const d = integration.data
+const url = `/integrations/${integration.id}`
+
+const caseStudy = d.caseStudy ? await getEntry('caseStudies', d.caseStudy) : undefined
+if (d.caseStudy && !caseStudy) {
+  throw new Error(`Integration "${integration.id}" references missing case study "${d.caseStudy}"`)
+}
+
+const relatedGuides = await resolveGuides(d.relatedGuides, url)
+---
+
+<Layout title={d.seoTitle} description={d.description}>
+  <BreadcrumbSchema
+    items={[
+      { name: 'Home', url: '/' },
+      { name: 'Integrations', url: '/integrations' },
+      { name: d.system, url },
+    ]}
+  />
+
+  <Hero eyebrow={`Integrations · ${d.category}`} title={d.headline} subtitle={d.summary} tone="primary" />
+
+  <section class="border-b border-(--color-brand-border) bg-(--color-brand-surface) px-6 py-14">
+    <div class="mx-auto grid max-w-6xl gap-8 md:grid-cols-2">
+      <div class="rounded-lg border border-(--color-brand-border) bg-white p-6">
+        <p class="text-xs font-semibold tracking-wider text-(--color-brand-primary) uppercase">
+          What we pull from {d.system}
+        </p>
+        <ul class="mt-4 space-y-2 text-sm">
+          {
+            d.dataPulled.map((item: string) => (
+              <li class="flex gap-2">
+                <span class="text-(--color-brand-secondary)">●</span>
+                <span>{item}</span>
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+      <div class="rounded-lg border border-(--color-brand-border) bg-white p-6">
+        <p class="text-xs font-semibold tracking-wider text-(--color-brand-primary) uppercase">
+          Where it goes
+        </p>
+        <ul class="mt-4 space-y-3 text-sm">
+          {
+            d.destinations.map((slug) => {
+              const dest = destinations[slug]
+              return (
+                <li>
+                  <span class="font-semibold">
+                    {dest.guide ? <a href={`/guides/${dest.guide}`}>{dest.name}</a> : dest.name}
+                  </span>
+                  <span class="block text-(--color-brand-ink-muted)">{dest.sends}</span>
+                </li>
+              )
+            })
+          }
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="px-6 py-16">
+    <Prose>
+      <Content />
+    </Prose>
+  </section>
+
+  {
+    caseStudy && (
+      <section class="border-t border-(--color-brand-border) px-6 py-16">
+        <div class="mx-auto max-w-3xl">
+          <h2 class="font-display text-2xl font-bold md:text-3xl">Proof, not a promise</h2>
+          <div class="mt-8">
+            <CaseStudyCard
+              client={caseStudy.data.client}
+              headline={caseStudy.data.headline}
+              marketingPayoff={caseStudy.data.marketingPayoff}
+              stack={caseStudy.data.stack}
+              industry={caseStudy.data.industry}
+              href={`/work/${caseStudy.id}`}
+            />
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <FaqSection faqs={d.faqs} />
+
+  {
+    relatedGuides.length > 0 && (
+      <section class="border-t border-(--color-brand-border) bg-(--color-brand-surface) px-6 py-16">
+        <div class="mx-auto max-w-6xl">
+          <h2 class="font-display text-2xl font-bold md:text-3xl">How the pieces work</h2>
+          <div class="mt-8 grid gap-6 md:grid-cols-3">
+            {relatedGuides.map((g) => (
+              <LinkCard
+                href={`/guides/${g.id}`}
+                eyebrow="Guide"
+                title={g.data.title}
+                body={g.data.summary}
+                cta="Read the guide →"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CTASection
+    heading={`Running ads off ${d.system} data?`}
+    body="Tell us what you use and where you advertise. We'll tell you what's possible and what it takes."
+  />
+</Layout>

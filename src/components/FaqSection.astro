@@ -1,0 +1,36 @@
+---
+interface Props {
+  faqs: { q: string; a: string }[]
+  heading?: string
+}
+
+const { faqs, heading = 'Questions we get' } = Astro.props
+const schema = {
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: faqs.map((f) => ({
+    '@type': 'Question',
+    name: f.q,
+    acceptedAnswer: { '@type': 'Answer', text: f.a },
+  })),
+}
+---
+
+{
+  faqs.length > 0 && (
+    <section class="border-t border-(--color-brand-border) px-6 py-16">
+      <div class="mx-auto max-w-3xl">
+        <h2 class="font-display text-2xl font-bold md:text-3xl">{heading}</h2>
+        <dl class="mt-8 space-y-6">
+          {faqs.map((f) => (
+            <div>
+              <dt class="font-display text-lg font-bold">{f.q}</dt>
+              <dd class="mt-2 leading-relaxed text-(--color-brand-ink-muted)">{f.a}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+      <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+    </section>
+  )
+}

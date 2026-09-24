@@ -1,0 +1,101 @@
+---
+import { getCollection, render } from 'astro:content'
+import Layout from '../../layouts/Layout.astro'
+import Hero from '../../components/Hero.astro'
+import Prose from '../../components/Prose.astro'
+import LinkCard from '../../components/LinkCard.astro'
+import FaqSection from '../../components/FaqSection.astro'
+import CTASection from '../../components/CTASection.astro'
+import BreadcrumbSchema from '../../components/schema/BreadcrumbSchema.astro'
+import ArticleSchema from '../../components/schema/ArticleSchema.astro'
+import { siteConfig } from '../../data/siteConfig'
+import { resolveGuides, resolveIntegrations } from '../../lib/entries'
+
+export const prerender = true
+
+export async function getStaticPaths() {
+  const guides = await getCollection('guides')
+  return guides.map((g) => ({ params: { slug: g.id }, props: { guide: g } }))
+}
+
+const { guide } = Astro.props
+const { Content } = await render(guide)
+const d = guide.data
+const url = `/guides/${guide.id}`
+
+const relatedGuides = await resolveGuides(d.relatedGuides, url)
+const relatedIntegrations = await resolveIntegrations(d.relatedIntegrations, url)
+
+const fmt = (date: Date) =>
+  date.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' })
+---
+
+<Layout title={d.seoTitle} description={d.description}>
+  <BreadcrumbSchema
+    items={[
+      { name: 'Home', url: '/' },
+      { name: 'Guides', url: '/guides' },
+      { name: d.title, url },
+    ]}
+  />
+  <ArticleSchema
+    headline={d.title}
+    description={d.description}
+    url={url}
+    published={d.published}
+    updated={d.updated}
+    keyword={d.keyword}
+  />
+
+  <Hero eyebrow="Guide" title={d.title} subtitle={d.summary} tone="primary" />
+
+  <section class="border-b border-(--color-brand-border) bg-(--color-brand-surface) px-6 py-4">
+    <p class="mx-auto max-w-3xl text-sm text-(--color-brand-ink-muted)">
+      By <a href={siteConfig.author.url} class="font-semibold">{siteConfig.author.name}</a> · Updated
+      <time datetime={d.updated.toISOString()}>{fmt(d.updated)}</time>
+    </p>
+  </section>
+
+  <section class="px-6 py-16">
+    <Prose>
+      <Content />
+    </Prose>
+  </section>
+
+  <FaqSection faqs={d.faqs} />
+
+  {
+    (relatedGuides.length > 0 || relatedIntegrations.length > 0) && (
+      <section class="border-t border-(--color-brand-border) bg-(--color-brand-surface) px-6 py-16">
+        <div class="mx-auto max-w-6xl">
+          <h2 class="font-display text-2xl font-bold md:text-3xl">Keep going</h2>
+          <div class="mt-8 grid gap-6 md:grid-cols-3">
+            {relatedIntegrations.map((i) => (
+              <LinkCard
+                href={`/integrations/${i.id}`}
+                eyebrow={`Integration · ${i.data.category}`}
+                title={i.data.headline}
+                body={i.data.summary}
+                cta="See the integration →"
+              />
+            ))}
+            {relatedGuides.map((g) => (
+              <LinkCard
+                href={`/guides/${g.id}`}
+                eyebrow="Guide"
+                title={g.data.title}
+                body={g.data.summary}
+                cta="Read the guide →"
+              />
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
+  <CTASection
+    heading="Want this wired up for your business?"
+    body="Tell us what system your customers live in and where you advertise. We'll tell you what's possible."
+  />
+</Layout>

@@ -1,0 +1,98 @@
+---
+title: 'Meta Conversions API, explained for small businesses'
+seoTitle: 'Meta Conversions API (CAPI) for Small Businesses: Send Sales From Your CRM | point.dog'
+description: "What Meta's Conversions API does, why the pixel alone isn't enough, how deduplication and Event Match Quality work, and how to send CRM sales and booked jobs back to Facebook and Instagram ads."
+summary: "The Meta pixel only sees the browser. The Conversions API lets you tell Meta who actually bought — including sales that happen on the phone or in your CRM."
+keyword: 'meta conversions api'
+published: 2026-09-24
+updated: 2026-09-24
+order: 2
+relatedGuides:
+  - click-ids-gclid-fbclid-msclkid
+  - server-side-tracking
+  - customer-match-custom-audiences
+relatedIntegrations:
+  - shopify
+  - field-service-software
+faqs:
+  - q: 'Is the Conversions API the same as Facebook CAPI?'
+    a: "Yes. Facebook Conversions API, Meta Conversions API, and CAPI are the same thing. Meta renamed the company, the API stayed."
+  - q: 'Do I still need the Meta pixel if I use the Conversions API?'
+    a: 'Usually yes. Meta recommends running both. The pixel captures browser behavior and the fbp and fbc identifiers; the Conversions API fills the gaps and carries events the browser never sees. Matching event IDs keep them from double counting.'
+  - q: 'What happened to Meta offline conversions?'
+    a: 'Meta discontinued its Offline Conversions API on May 14, 2025. Offline and CRM events now go through the Conversions API with an action source that says where the event happened, like a physical store or a phone call.'
+  - q: 'How far back can I send events?'
+    a: "Web events should be sent within 7 days of when they happened. Physical-store transactions can be sent up to 62 days after the conversion. Faster is better either way: Meta's delivery system learns from recent signal."
+---
+
+## What it is
+
+The **Conversions API** (CAPI) is a server-to-server connection between your business and
+Meta. Instead of relying on a script in the visitor's browser (the pixel), your server tells
+Meta directly: *this person became a lead, this person bought, this is what they paid.*
+
+## Why the pixel alone falls short
+
+The pixel runs in the browser, so it loses signal to:
+
+- **Ad blockers** and privacy extensions
+- **iOS and Safari restrictions** on tracking and cookie lifetime
+- **Anything that happens off the website:** phone orders, booked jobs, signed contracts,
+  in-store sales, invoices paid a week later
+
+For a lot of small businesses, that last group is where most of the revenue is. If Meta only
+sees the form fill, it optimizes for people who fill out forms, not people who pay.
+
+## The two jobs CAPI does
+
+**1. Backfill website events.** Your server sends the same Lead or Purchase event the pixel
+sends. When the browser drops it, the server copy still lands.
+
+**2. Send events the browser never sees.** A sale closed in your CRM, a job completed in your
+field-service software, an invoice paid in QuickBooks. These go to Meta with an
+`action_source` that says where they happened.
+
+## Deduplication: send it twice, count it once
+
+When the pixel and the server both send the same event, Meta needs to know it's one event.
+You give both copies the same **event name** and the same **event ID**. Meta keeps one.
+
+Get this wrong and your reported conversions double, which is worse than missing some.
+
+## Matching: how Meta knows who it was
+
+Each server event carries customer information so Meta can match it to a real account:
+
+- **Hashed with SHA-256 before sending:** email, phone, first and last name, city, state,
+  ZIP, and your own customer ID
+- **Sent as-is:** the visitor's IP address and user agent, plus the `fbp` (browser ID) and
+  `fbc` (click ID) values from the pixel's cookies
+
+Normalize before hashing: lowercase and trim emails, digits-only phone numbers with country
+code. A sloppy phone format is the most common reason matches fail.
+
+Meta grades web events with an **Event Match Quality** score from 0 to 10. More good
+identifiers, higher score, better optimization.
+
+## Revenue, not just events
+
+Send `value` and `currency` on every purchase or closed-job event. Then Meta can optimize
+for value and report return on ad spend from real revenue, not from a guess you typed into
+Ads Manager.
+
+## What a small-business CAPI setup looks like
+
+1. Pixel on the site, with event IDs on key events.
+2. A server endpoint (we often use a Cloudflare Worker) that mirrors those web events with
+   hashed customer data.
+3. A nightly or real-time bridge from your CRM or store that sends downstream events like
+   booked, sold, and paid, with value.
+4. Customer lists synced as audiences, including exclusions of current customers. See
+   [Customer Match and custom audiences](/guides/customer-match-custom-audiences).
+
+## Native integrations vs. a custom bridge
+
+Shopify, some CRMs, and some field-service tools ship a Meta integration that covers the
+basics. Use it if it does what you need. The gaps are usually the same: phone and offline
+sales aren't included, the value sent isn't the real revenue, and refunds never come back.
+That's where a custom bridge earns its keep.

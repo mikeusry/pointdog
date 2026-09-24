@@ -1,0 +1,31 @@
+---
+interface Props {
+  href: string
+  eyebrow?: string
+  title: string
+  body: string
+  cta?: string
+}
+
+const { href, eyebrow, title, body, cta = 'Read more →' } = Astro.props
+---
+
+<a
+  href={href}
+  class="group block h-full rounded-lg border border-(--color-brand-border) bg-white p-6 transition hover:border-(--color-brand-primary) hover:shadow-md"
+>
+  {
+    eyebrow && (
+      <span class="text-xs font-semibold tracking-wider text-(--color-brand-primary) uppercase">
+        {eyebrow}
+      </span>
+    )
+  }
+  <h3
+    class="font-display mt-3 text-xl font-bold text-(--color-brand-ink) group-hover:text-(--color-brand-primary)"
+  >
+    {title}
+  </h3>
+  <p class="mt-3 text-sm text-(--color-brand-ink-muted)">{body}</p>
+  <span class="mt-5 inline-block text-sm font-semibold text-(--color-brand-primary)">{cta}</span>
+</a>

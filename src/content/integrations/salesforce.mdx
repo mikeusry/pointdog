@@ -1,0 +1,57 @@
+---
+system: Salesforce
+category: CRM
+headline: 'Salesforce to Google Ads and Meta: bid on closed-won, not form fills.'
+seoTitle: 'Salesforce Google Ads Integration: Opportunity Revenue to Google, Meta & Microsoft | point.dog'
+description: 'Send Salesforce opportunity stages and closed-won revenue back to Google Ads, Meta, and Microsoft Ads, keyed on the original click or hashed contact data, so your campaigns find leads your sales team can close.'
+summary: 'Salesforce knows which leads your team closed and for how much. We send that back to your ad platforms so they find more of them.'
+dataPulled:
+  - Leads and contacts with lead source
+  - Opportunities, stages, amounts, and close dates
+  - Stored click IDs on the lead record
+  - Converted-lead relationships (lead → contact → opportunity)
+  - Accounts and custom fields for segmentation
+destinations:
+  - google-ads
+  - meta
+  - microsoft-ads
+order: 3
+relatedGuides:
+  - offline-conversion-tracking
+  - click-ids-gclid-fbclid-msclkid
+  - google-ads-data-manager-api
+faqs:
+  - q: 'Google Ads has a Salesforce connector. Why build something custom?'
+    a: "Use the native connector if it fits. It works on opportunity stages keyed on a gclid stored in Salesforce. Custom bridges earn their keep when leads come in without a gclid, when you also advertise on Meta and Microsoft, or when the revenue you care about lives in custom objects."
+  - q: 'Does my Salesforce edition have API access?'
+    a: 'API access depends on your edition. Enterprise and above include it; some lower editions need an add-on. We check this on the first call.'
+  - q: 'The click ID is on the lead, but the revenue is on the opportunity. How does that work?'
+    a: "When a lead converts, we follow it to the contact and opportunity it became, so the opportunity's stage and amount can be sent with the original click ID."
+---
+
+## The Salesforce attribution gap
+
+The click happens on a lead. The revenue happens on an opportunity weeks later, often after
+the lead has been converted, merged, or reassigned. Somewhere in that journey the original
+ad click gets lost, and the ad platforms never learn which campaigns produced revenue.
+
+## What we build
+
+1. **Capture.** Click IDs and hashed contact info stored on the Salesforce lead from every
+   web form and booking tool. See [click IDs explained](/guides/click-ids-gclid-fbclid-msclkid).
+2. **Follow the lead.** Converted leads traced to their contact and opportunity, so the click
+   ID follows the money.
+3. **Stage conversions.** Opportunity stage changes (qualified, proposal, closed-won) sent as
+   conversions with the opportunity amount or a predicted value for early stages.
+4. **Every platform.** Google through the
+   [Data Manager API](/guides/google-ads-data-manager-api), Meta through the
+   [Conversions API](/guides/meta-conversions-api), and Microsoft offline conversions, from
+   one pipeline.
+5. **Audiences.** Customers excluded from prospecting campaigns, closed-won accounts as
+   lookalike seeds.
+
+## Built for small teams on big software
+
+Plenty of 10- and 20-person companies run Salesforce without a Salesforce admin, let alone a
+data engineer. That's the gap we fill: someone who understands both the Salesforce data model
+and how ad platforms learn, and can wire the two together without a six-month project.

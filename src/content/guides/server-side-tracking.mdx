@@ -1,0 +1,87 @@
+---
+title: "Server-side tracking: what it fixes and what it doesn't"
+seoTitle: 'Server-Side Tracking for Small Businesses: What It Fixes (and What It Doesn’t) | point.dog'
+description: 'Server-side tracking explained without the hype: how it recovers conversions lost to ad blockers and Safari, where server-side GTM fits, the Safari cookie cap that still applies, and why it is not a substitute for a CRM bridge.'
+summary: "Moving tracking to a server recovers lost conversions and makes your data yours. It doesn't fix bad data, skip consent, or see sales that happen off the website."
+keyword: 'server side tracking'
+published: 2026-09-24
+updated: 2026-09-24
+order: 6
+relatedGuides:
+  - meta-conversions-api
+  - first-party-data
+  - click-ids-gclid-fbclid-msclkid
+relatedIntegrations:
+  - shopify
+faqs:
+  - q: 'What is server-side tracking?'
+    a: "Sending analytics and ad events from a server you control instead of only from scripts in the visitor's browser. The browser talks to your server; your server talks to Google, Meta, and the rest."
+  - q: 'Do I need server-side Google Tag Manager?'
+    a: "Not always. Server-side GTM is one way to do it. A lightweight worker that calls the Conversions API, GA4 Measurement Protocol, and Google's conversion APIs directly can be simpler and cheaper for a small business."
+  - q: 'Does server-side tracking get around consent requirements?'
+    a: "No. If a visitor declines tracking, a server doesn't change that. Server-side tracking improves reliability and control; it doesn't change what you're allowed to collect."
+  - q: 'Does server-side tracking capture phone sales and offline revenue?'
+    a: "No. It only sees what happens on your website. Sales in your CRM, store, or field-service software need a separate bridge that sends those outcomes to the ad platforms."
+---
+
+## What it is
+
+Traditional tracking puts a script from each vendor in the visitor's browser: the Google tag,
+the Meta pixel, TikTok, and so on. Each one sends data straight from the browser to the
+vendor.
+
+**Server-side tracking** routes events through a server you control first. The browser sends
+one event to your domain. Your server decides what to forward, cleans it up, adds what it
+knows, and sends it on.
+
+## What it fixes
+
+- **Ad blockers.** Requests to your own domain are blocked far less often than requests to
+  known tracking domains.
+- **Cookie lifetime.** Identifiers set by your server on your own domain generally last
+  longer than cookies set by third-party JavaScript.
+- **Data control.** You decide what leaves your server. Strip IP addresses, hash emails, drop
+  fields a vendor doesn't need.
+- **Page speed.** Fewer third-party scripts in the browser.
+- **Enrichment.** Your server can attach things the browser doesn't know, like whether this
+  is a returning customer.
+
+## The Safari caveat
+
+Since Safari 16.4, even cookies set by a server are capped at 7 days when that server's IP
+address doesn't match your website's. A tagging server on a subdomain but hosted somewhere
+else can get the same short cookie lifetime you were trying to escape. Where your tracking
+endpoint runs matters.
+
+## What it doesn't fix
+
+- **Consent.** A declined cookie banner means declined. Server-side doesn't change the law.
+- **Bad events.** If your site fires "Lead" on every page view, the server faithfully
+  forwards garbage.
+- **Offline revenue.** Phone orders, booked jobs, and paid invoices never touch your website.
+  They need a CRM bridge. See [offline conversion tracking](/guides/offline-conversion-tracking).
+
+## The options
+
+| Approach | Good for |
+|---|---|
+| Server-side Google Tag Manager | Teams already deep in GTM who want a familiar interface |
+| Direct API calls from a worker or backend | Small sites that want a few reliable events, cheaply |
+| A first-party pixel on your own infrastructure | Owning raw event data for your own analysis and audiences |
+
+The APIs on the other end are the same either way: Meta's
+[Conversions API](/guides/meta-conversions-api), the GA4 Measurement Protocol, and Google's
+conversion uploads.
+
+## What we run
+
+This website runs our own first-party pixel on a Cloudflare Worker. Events go to our domain,
+land in our own storage, and get forwarded from there. It's the same setup we build for
+clients, and it's cheap to run at small-business volume.
+
+## Where to start
+
+1. Pick the three to five events that actually matter (lead, booking, purchase).
+2. Give each one an event ID so browser and server copies deduplicate.
+3. Send them server-side with hashed customer data.
+4. Then connect your CRM so the outcomes after those events flow back too.

@@ -1,0 +1,87 @@
+---
+title: 'Click IDs explained: gclid, gbraid, wbraid, fbclid, msclkid'
+seoTitle: 'What Is a gclid? gbraid, wbraid, fbclid & msclkid Explained | point.dog'
+description: 'What gclid, gbraid, wbraid, fbclid, and msclkid are, why they disappear, how long each one is good for, and how to store them so you can send sales back to Google, Meta, and Microsoft Ads.'
+summary: "That random string on the end of your ad URLs is the key to sending sales back to the ad platform. Most businesses throw it away."
+keyword: 'gclid'
+published: 2026-09-24
+updated: 2026-09-24
+order: 3
+relatedGuides:
+  - offline-conversion-tracking
+  - google-ads-data-manager-api
+  - meta-conversions-api
+relatedIntegrations:
+  - hubspot
+  - salesforce
+faqs:
+  - q: 'What is a gclid?'
+    a: "The Google Click Identifier. Google Ads adds it to your landing page URL when someone clicks an ad with auto-tagging turned on. Store it with the lead, and later you can tell Google exactly which click turned into a sale."
+  - q: 'Why do some Google clicks have wbraid or gbraid instead of gclid?'
+    a: 'Those come from iOS traffic affected by Apple privacy rules. wbraid is used for web conversions and gbraid for app conversions. Store whichever one arrives; a single conversion upload uses one type, not a mix.'
+  - q: 'How long is a click ID good for?'
+    a: 'Google and Microsoft accept offline conversions up to 90 days after the click. Meta web events should be sent within 7 days. Upload daily and none of these limits matter.'
+  - q: 'What if the click ID is missing?'
+    a: 'Fall back to hashed email and phone. Google calls this enhanced conversions, Microsoft supports enhanced conversions too, and Meta matches on hashed customer data through the Conversions API.'
+---
+
+## What a click ID is
+
+When someone clicks your ad, the platform appends a unique ID to the landing page URL:
+
+| Platform | Parameter | Offline window |
+|---|---|---|
+| Google Ads | `gclid` (or `wbraid` / `gbraid` on iOS) | 90 days from the click |
+| Meta | `fbclid` | Send web events within 7 days |
+| Microsoft Ads | `msclkid` | 90 days from the click |
+
+That ID is the receipt. If you save it next to the lead, you can later tell the platform:
+*the click with this ID turned into a $4,200 job.* That's the most precise signal you can send.
+
+## Why they go missing
+
+- **The form doesn't capture it.** The ID is in the URL on the landing page, the visitor
+  clicks to a second page, and it's gone.
+- **The CRM has no field for it.** The form captures it, and nothing stores it.
+- **Safari cuts it short.** Safari caps cookies set by JavaScript at 7 days, and less when
+  the visit came from a link with tracking parameters. In Private Browsing, Safari strips
+  known click IDs from URLs entirely.
+- **Redirects and link shorteners** that drop query parameters.
+
+## How to keep them
+
+1. **Read on landing.** A small script reads `gclid`, `gbraid`, `wbraid`, `fbclid`, and
+   `msclkid` from the URL on any page.
+2. **Store first-party.** Save them in a cookie on your own domain, ideally set by your
+   server, not only by JavaScript, so they survive longer.
+3. **Attach to every lead.** Hidden form fields, booking widgets, and chat tools pass the
+   stored IDs along with the contact details.
+4. **Save on the record.** Your CRM or field-service software gets a field for each ID on
+   the lead or customer.
+5. **Send it back with the outcome.** When the deal closes or the invoice is paid, the
+   bridge uploads the conversion with the ID and the value.
+
+## Meta is a little different
+
+Meta doesn't want the raw `fbclid` on its own. It wants the `fbc` value, formatted as
+`fb.1.<timestamp>.<fbclid>`, which the Meta pixel writes to a cookie automatically. Store
+that and the `fbp` browser ID, and send both with your Conversions API events. See
+[Meta Conversions API](/guides/meta-conversions-api).
+
+## Your fallback: hashed email and phone
+
+You won't catch every click ID. Phone calls, returning visitors, and privacy tools make sure
+of it. So every upload should also carry the customer's email and phone, normalized and
+hashed with SHA-256:
+
+- Google: **enhanced conversions** (63-day window for leads)
+- Microsoft: **enhanced conversions** (hashed email or phone can replace the msclkid)
+- Meta: hashed customer information on every **Conversions API** event
+
+Click ID when you have it, hashed contact info always. That combination is what gets your
+match rates up.
+
+## The other platforms
+
+TikTok (`ttclid`) and LinkedIn (`li_fat_id`) work the same way. If you advertise there,
+capture those too. Storing an extra field costs nothing.
