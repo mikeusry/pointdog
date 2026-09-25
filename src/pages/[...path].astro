@@ -1,0 +1,51 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+
+/**
+ * Lowest-priority route: every URL no other page claims lands here. Old Webflow
+ * URLs (video-production era) get a 301 to the closest new page; everything else
+ * gets a real 404. This lives in a route, not middleware, because on Vercel
+ * unmatched paths 404 at the edge without ever reaching middleware.
+ */
+export const prerender = false
+
+const legacyRedirects: [prefix: string, destination: string][] = [
+  ['/blog', '/guides'],
+  ['/team', '/about'],
+  ['/video', '/work'],
+  ['/videos', '/work'],
+  ['/client', '/work'],
+  ['/client-list', '/work'],
+  ['/case-study', '/work'],
+  ['/web-project', '/work'],
+  ['/industry', '/work'],
+  ['/tags', '/work'],
+  ['/splost-marketing', '/work'],
+  ['/free-local-seo-report', '/contact'],
+  ['/search', '/'],
+  ['/style-guide', '/'],
+  ['/base-page', '/'],
+]
+
+const path = Astro.url.pathname.toLowerCase().replace(/\/+$/, '')
+const match = legacyRedirects.find(([prefix]) => path === prefix || path.startsWith(`${prefix}/`))
+if (match) {
+  return Astro.redirect(match[1], 301)
+}
+
+Astro.response.status = 404
+---
+
+<Layout title="Page not found | point.dog" noindex>
+  <Hero
+    eyebrow="404"
+    title="That page isn't here."
+    subtitle="It may have moved when we rebuilt the site. These are good places to start."
+    ctaLabel="See our work"
+    ctaHref="/work"
+    secondaryLabel="Read the guides"
+    secondaryHref="/guides"
+    tone="primary"
+  />
+</Layout>
