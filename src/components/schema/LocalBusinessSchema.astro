@@ -6,16 +6,18 @@ const schema = {
   '@type': 'ProfessionalService',
   '@id': 'https://www.point.dog/#organization',
   name: siteConfig.company.longName,
+  legalName: siteConfig.legal.name,
   description:
     'Athens-based digital marketing agency. We build the websites, integrations, and tracking infrastructure that make modern advertising work.',
   url: 'https://www.point.dog',
   image: 'https://www.point.dog/og-default.png',
   logo: 'https://www.point.dog/logo-mark.png',
-  email: siteConfig.company.email,
   address: {
     '@type': 'PostalAddress',
-    addressLocality: siteConfig.company.address.city,
-    addressRegion: siteConfig.company.address.state,
+    streetAddress: siteConfig.legal.address.street,
+    addressLocality: siteConfig.legal.address.city,
+    addressRegion: siteConfig.legal.address.state,
+    postalCode: siteConfig.legal.address.postal,
     addressCountry: 'US',
   },
   geo: {

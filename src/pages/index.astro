@@ -222,9 +222,14 @@ const integrations = (await getCollection('integrations')).sort((a, b) => a.data
           Five operating brands. Same stack we'd build for you.
         </h2>
         <p class="mx-auto mt-4 max-w-2xl text-white/80">
-          Before we shipped this for clients, we built it for ourselves. The same playbook —
-          custom websites, first-party tracking, CRM integrations, ad infrastructure — runs
-          across all of these.
+          These are brands of{' '}
+          <a href="/legal" class="underline decoration-white/40 underline-offset-2 hover:text-white">
+            {siteConfig.legal.name}
+          </a>
+          , the Georgia corporation that owns this website. Before we shipped this for
+          clients, we built it for ourselves. The same playbook — custom websites,
+          first-party tracking, CRM integrations, ad infrastructure — runs across all of
+          these.
         </p>
       </div>
       <ul class="mt-12 grid gap-4 md:grid-cols-3 lg:grid-cols-5">

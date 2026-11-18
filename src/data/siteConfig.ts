@@ -18,13 +18,39 @@ export const siteConfig = {
     tagline: 'The agency that actually builds the backend.',
     phone: '',
     phoneRaw: '',
-    email: 'mike@point.dog',
     address: {
       city: 'Athens',
       state: 'GA',
       region: 'Northeast Georgia',
       full: 'Athens, GA',
     },
+  },
+
+  /**
+   * Legal entity. Public SOS facts only. This website (point.dog) is a
+   * brand of the corporation — not a separate company and not the seller.
+   */
+  legal: {
+    name: "Soul Miner's Corporation",
+    appleFormName: "SOUL MINER'S CORPORATION",
+    jurisdiction: 'Georgia',
+    entityType: 'Domestic profit corporation',
+    controlNumber: '20062293',
+    formed: 'April 29, 2020',
+    duns: '037581952',
+    officer: {
+      name: 'Mike Usry',
+      title: 'President',
+    },
+    address: {
+      street: '189 Luke Road',
+      city: 'Bogart',
+      state: 'GA',
+      postal: '30622',
+      county: 'Clarke County',
+      full: '189 Luke Road, Bogart, Georgia 30622',
+    },
+    sosSearch: 'https://ecorp.sos.ga.gov/BusinessSearch',
   },
 
   /** Byline on guides and their TechArticle schema. */

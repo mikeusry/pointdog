@@ -116,7 +116,7 @@ export const POST: APIRoute = async ({ request }) => {
   } catch (err) {
     console.error('[contact] SendGrid delivery failed:', err)
     return new Response(
-      'We could not send your message right now. Please email mike@point.dog directly.',
+      'We could not send your message right now. Please try again.',
       { status: 500 }
     )
   }

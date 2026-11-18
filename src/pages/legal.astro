@@ -1,0 +1,83 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Hero from '../components/Hero.astro'
+import Prose from '../components/Prose.astro'
+import BreadcrumbSchema from '../components/schema/BreadcrumbSchema.astro'
+import { siteConfig } from '../data/siteConfig'
+
+const { legal, company } = siteConfig
+---
+
+<Layout
+  title={`Legal — ${legal.name} owns point.dog`}
+  description={`${company.name} is owned and operated by ${legal.name}, a Georgia corporation at ${legal.address.full}.`}
+>
+  <BreadcrumbSchema items={[{ name: 'Home', url: '/' }, { name: 'Legal', url: '/legal' }]} />
+
+  <Hero
+    eyebrow="Legal entity"
+    title={`${legal.name} owns this website.`}
+    subtitle="point.dog is a brand of the corporation. It is not a separate company, not a DBA on the App Store, and not the seller."
+    tone="primary"
+  />
+
+  <section class="px-6 py-16">
+    <Prose>
+      <h2>Who owns point.dog</h2>
+      <p>
+        This website, <strong>https://www.point.dog</strong>, is owned and operated by
+        <strong>{legal.name}</strong>
+        (Apple / SOS form: <strong>{legal.appleFormName}</strong>).
+        {legal.name} is a {legal.jurisdiction} {legal.entityType.toLowerCase()}. It is the
+        legal entity. point.dog is a brand and this site. It is not a separate legal
+        entity.
+      </p>
+
+      <h2>Corporation on the public record</h2>
+      <ul>
+        <li>Legal name: <strong>{legal.name}</strong></li>
+        <li>Apple / SOS form: <strong>{legal.appleFormName}</strong></li>
+        <li>Jurisdiction: {legal.jurisdiction}</li>
+        <li>Entity type: {legal.entityType}</li>
+        <li>
+          Georgia Secretary of State control number: <strong>{legal.controlNumber}</strong>
+        </li>
+        <li>Formed: {legal.formed}</li>
+        <li>D-U-N-S Number: {legal.duns}</li>
+        <li>
+          Principal office: <strong>{legal.address.full}</strong> ({legal.address.county})
+        </li>
+        <li>
+          Officer: {legal.officer.name}, {legal.officer.title}
+        </li>
+      </ul>
+      <p>
+        Confirm the corporation on the Georgia Secretary of State business search. Search
+        control number <strong>{legal.controlNumber}</strong> or the legal name{' '}
+        <strong>{legal.name}</strong>:{' '}
+        <a href={legal.sosSearch} rel="noopener" target="_blank">
+          ecorp.sos.ga.gov/BusinessSearch
+        </a>
+        . Certificate of Incorporation, Articles of Incorporation, and the current annual
+        registration are on file there. They are the public formation and existence records
+        for this entity.
+      </p>
+
+      <h2>What this is not</h2>
+      <p>
+        Soul Miner’s Eden, point.dog, Point Dog, and the other operating brands on this
+        site are products and trade names of {legal.name}. They are not the legal entity.
+        They are not a second seller. Southland Organics Company is a different
+        corporation. Do not attach this website to that entity.
+      </p>
+
+      <h2>Contact</h2>
+      <p>
+        {legal.officer.name}<br />
+        {legal.officer.title}<br />
+        {legal.name}<br />
+        {legal.address.full}
+      </p>
+    </Prose>
+  </section>
+</Layout>

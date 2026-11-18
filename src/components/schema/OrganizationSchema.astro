@@ -1,20 +1,37 @@
 ---
 import { siteConfig } from '../../data/siteConfig'
 
+const { legal } = siteConfig
+
 const schema = {
   '@context': 'https://schema.org',
   '@type': 'Organization',
   '@id': 'https://www.point.dog/#organization',
   name: siteConfig.company.longName,
-  alternateName: siteConfig.company.name,
+  legalName: legal.name,
+  alternateName: [siteConfig.company.name, legal.appleFormName],
   url: 'https://www.point.dog',
   logo: 'https://www.point.dog/logo-mark.png',
   description: siteConfig.company.tagline,
-  email: siteConfig.company.email,
+  identifier: [
+    {
+      '@type': 'PropertyValue',
+      name: 'Georgia Secretary of State control number',
+      value: legal.controlNumber,
+    },
+    {
+      '@type': 'PropertyValue',
+      name: 'D-U-N-S',
+      value: legal.duns,
+    },
+  ],
+  foundingDate: '2020-04-29',
   address: {
     '@type': 'PostalAddress',
-    addressLocality: siteConfig.company.address.city,
-    addressRegion: siteConfig.company.address.state,
+    streetAddress: legal.address.street,
+    addressLocality: legal.address.city,
+    addressRegion: legal.address.state,
+    postalCode: legal.address.postal,
     addressCountry: 'US',
   },
   sameAs: [siteConfig.social.linkedin].filter(Boolean),

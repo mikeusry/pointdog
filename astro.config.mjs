@@ -25,6 +25,7 @@ export default defineConfig({
         'https://www.point.dog/work/cprc-enough',
         'https://www.point.dog/work/heiser-group',
         'https://www.point.dog/privacy',
+        'https://www.point.dog/legal',
       ],
     }),
   ],

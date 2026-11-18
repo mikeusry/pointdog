@@ -3,6 +3,7 @@ import Layout from '../layouts/Layout.astro'
 import Hero from '../components/Hero.astro'
 import Prose from '../components/Prose.astro'
 import BreadcrumbSchema from '../components/schema/BreadcrumbSchema.astro'
+import { siteConfig } from '../data/siteConfig'
 ---
 
 <Layout
@@ -52,9 +53,16 @@ import BreadcrumbSchema from '../components/schema/BreadcrumbSchema.astro'
         sessions. You can disable cookies in your browser settings.
       </p>
 
+      <h2>Who operates this site</h2>
+      <p>
+        This website is owned and operated by{' '}
+        <a href="/legal">{siteConfig.legal.name}</a>, {siteConfig.legal.address.full}. See
+        the <a href="/legal">legal page</a> for the public corporation record.
+      </p>
+
       <h2>Contact</h2>
       <p>
-        Questions about this policy: <a href="mailto:mike@point.dog">mike@point.dog</a>.
+        Questions about this policy: <a href="/contact">contact us</a>.
       </p>
     </Prose>
   </section>
